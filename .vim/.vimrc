@@ -30,11 +30,11 @@ set autoread   "外部でファイルに変更がされた場合は読みなお�
 
 set showcmd " 入力中のコマンドをステータスに表示する
 
+" ウィンドウの幅より長い行は折り返して、次の行に続けて表示する
+set wrap
 " 入力されているテキストの最大幅
 " (行がそれより長くなると、この幅を超えないように空白の後で改行される)を無効にする
 set textwidth=0
-" ウィンドウの幅より長い行は折り返して、次の行に続けて表示する
-set wrap
 
 set wrapscan   " 最後尾まで検索を終えたら次の検索で先頭に移る
 
@@ -64,10 +64,14 @@ call neobundle#begin(expand('~/.vim/bundle/'))
 "neobundle自体をneobundleで管理
 NeoBundleFetch 'shougo/neobundle.vim'
 
-NeoBundle 'scrooloose/nerdtree'
+"NeoBundle 'scrooloose/nerdtree'
 NeoBundle 'itchyny/lightline.vim'
 NeoBundle 'tpope/vim-fugitive'
 NeoBundle 'airblade/vim-gitgutter'
+NeoBundle 'Shougo/unite.vim'
+NeoBundle 'Shougo/vimfiler.vim'
+
+
 
 call neobundle#end()
 
@@ -83,11 +87,20 @@ NeoBundleCheck
 "-------------------------
 
 " 引数なしでvimを開くとNERDTreeを起動
-let file_name = expand('%')
-if has('vim_starting') &&  file_name == ''
-	autocmd VimEnter * NERDTree ./
-endif
+"let file_name = expand('%')
+"if has('vim_starting') &&  file_name == ''
+"	autocmd VimEnter * NERDTree ./
+"endif
 
+"unite
+"インサートモードで開始しない
+let g:unite_enable_start_insert = 0
+
+"vimfiler
+let g:vimfiler_as_default_explorer = 1
+"IDE like
+"command Vf VimFiler -buffer-name=explorer -split -simple -winwidth=35 -toggle -no-quit
+nnoremap <silent> <Leader>fi :<C-u>VimFilerBufferDir -split -simple -winwidth=35 -no-quit<CR>
 
 "lightline
 " vim-gitgutter
