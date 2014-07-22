@@ -1,10 +1,10 @@
-"etc
+
 set t_Co=256
 set laststatus=2
 
 "ColorScheme
 colorscheme molokai
-syntax on
+
 let g:molokai_original = 0
 set background=dark
 
@@ -35,7 +35,7 @@ set wrap
 " 入力されているテキストの最大幅
 " (行がそれより長くなると、この幅を超えないように空白の後で改行される)を無効にする
 set textwidth=0
-
+set nowrap
 set wrapscan   " 最後尾まで検索を終えたら次の検索で先頭に移る
 
 " OSのクリップボードをレジスタ指定無しで Yank, Put 出来るようにする
@@ -70,10 +70,13 @@ NeoBundle 'tpope/vim-fugitive'
 NeoBundle 'airblade/vim-gitgutter'
 NeoBundle 'Shougo/unite.vim'
 NeoBundle 'Shougo/vimfiler.vim'
-
+"NeoBundle 'https://github.com/Shougo/neocomplcache.git'
+"NeoBundle 'https://github.com/Shougo/neocomplcache-clang_complete.git'
+NeoBundle 'Rip-Rip/clang_complete'
 
 
 call neobundle#end()
+
 
 " required:
 filetype plugin indent on
@@ -86,11 +89,15 @@ NeoBundleCheck
 " end neobundle settings.
 "-------------------------
 
-" 引数なしでvimを開くとNERDTreeを起動
-"let file_name = expand('%')
-"if has('vim_starting') &&  file_name == ''
-"	autocmd VimEnter * NERDTree ./
-"endif
+"neocomplcache
+"let g:neocomplcache_enable_at_startup=1
+
+
+"clang_complete
+let g:clang_complete_auto = 1 
+"let g:clang_use_library   = 1 
+let g:clang_library_path  = '/usr/lib/llvm-3.4/lib'
+"let g:clang_user_options  = '2>/dev/null || exit 0"'
 
 "unite
 "インサートモードで開始しない
