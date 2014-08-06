@@ -4,16 +4,35 @@ set laststatus=2
 
 "ColorScheme
 colorscheme molokai
+:syntax on
 
 let g:molokai_original = 0
+"let g:rehash256 = 1
 set background=dark
 
 "半透明
 highlight Normal ctermbg=none
-
 set number         " 行番号を表示する
 set cursorline     " カーソル行の背景色を変える
-set cursorcolumn   " カーソル位置のカラムの背景色を変える
+"set cursorcolumn   " カーソル位置のカラムの背景色を変える
+" インサートモードに入った時にカーソル行(列)の色を変更する
+augroup vimrc_change_cursorline_color
+		autocmd!
+		" インサートモードに入った時にカーソル行の色をブルーグリーンにする
+	"	autocmd InsertEnter * highlight CursorLine ctermbg=green
+
+		autocmd InsertEnter * hi LineNr ctermbg = green
+		autocmd InsertLeave * hi LineNr ctermbg = gray
+
+		"guibg=#005f87 | highlight CursorColumn ctermbg=24
+		"guibg=#005f87
+		"
+		"     インサートモードを抜けた時にカーソル行の色を黒に近いダークグレーにする
+		"autocmd InsertLeave * highlight CursorLine ctermbg=236
+		"guibg=#303030 | highlight CursorColumn ctermbg=236
+		"guibg=#303030
+augroup END
+
 set backspace=indent,eol,start " Backspaceキーの影響範囲に制限を設けない
 set whichwrap=b,s,h,l,<,>,[,]  " 行頭行末の左右移動で行をまたぐ
 set sidescrolloff=16           " 左右スクロール時の視界を確保
@@ -50,7 +69,6 @@ set guioptions+=a
 set mouse=a
 "インサートモードから抜けると自動的にMEをオフにする
 "set iminsert=2
-
 "---------------------------
 " Start Neobundle Settings.
 "---------------------------
@@ -70,11 +88,12 @@ NeoBundle 'tpope/vim-fugitive'
 NeoBundle 'airblade/vim-gitgutter'
 NeoBundle 'Shougo/unite.vim'
 NeoBundle 'Shougo/vimfiler.vim'
+NeoBundle 'Shougo/neosnippet'
+NeoBundle "Shougo/neosnippet-snippets"
 "NeoBundle 'https://github.com/Shougo/neocomplcache.git'
-"NeoBundle 'https://github.com/Shougo/neocomplcache-clang_complete.git'
+"t NeoBundle 'https://github.com/Shougo/neocomplcache-clang_complete.git'
 NeoBundle 'Rip-Rip/clang_complete'
-
-
+NeoBundle 'kana/vim-arpeggio'
 call neobundle#end()
 
 
@@ -88,6 +107,15 @@ NeoBundleCheck
 "-------------------------
 " end neobundle settings.
 "-------------------------
+"jk同時押しでEsc
+call arpeggio#load()
+Arpeggionmap jk <Esc>
+Arpeggioimap jk <Esc>
+Arpeggiocmap jk <Esc>
+Arpeggiovmap jk <Esc>
+"Plugin key-mappings.  " <C-k>でsnippetの展開
+imap <C-k> <Plug>(neosnippet_expand_or_jump)
+smap <C-k> <Plug>(neosnippet_expand_or_jump)
 
 "neocomplcache
 "let g:neocomplcache_enable_at_startup=1
@@ -117,7 +145,7 @@ let g:gitgutter_sign_removed = '✘'
 
 " lightline.vim
 let g:lightline = {
-				\ 'colorscheme': 'molokai',
+				\ 'colorscheme': 'newcolor',
 				\ 'mode_map': {'c': 'NORMAL'},
 				\ 'active': {
 				\   'left': [
