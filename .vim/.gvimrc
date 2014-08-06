@@ -1,5 +1,8 @@
 set guioptions-=T
 
+" Linux
+set guifont=Inconsolata\ 12
+set guifontwide=Inconsolata\ 12
 "set t_Co=256
 colorscheme newcolor
 set background=dark
