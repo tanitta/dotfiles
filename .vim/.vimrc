@@ -95,7 +95,7 @@ call neobundle#begin(expand('~/.vim/bundle/'))
 
 "neobundle自体をneobundleで管理
 NeoBundleFetch 'shougo/neobundle.vim'
-
+NeoBundle "Shougo/vimproc.vim"
 NeoBundle "tyru/caw.vim"
 NeoBundle 'itchyny/lightline.vim'
 NeoBundle 'tpope/vim-fugitive'
@@ -123,6 +123,9 @@ NeoBundleCheck
 " end neobundle settings.
 "-------------------------
 
+autocmd VimEnter * :copen
+autocmd VimEnter * :VimFilerExplorer 
+
 " コメントアウトを切り替えるマッピング
 " \c でカーソル行をコメントアウト
 " 再度 \c でコメントアウトを解除
@@ -149,47 +152,40 @@ Arpeggiovmap jk <Esc>
 " Disable AutoComplPop.
 let g:acp_enableAtStartup = 0
 " Use neocomplete.
-let g:neocomplete#enable_at_startup = 1
+let g:neocomplete#enable_at_startup = 0
 " Use smartcase.
 let g:neocomplete#enable_smart_case = 1
 " Set minimum syntax keyword length.
-let g:neocomplete#sources#syntax#min_keyword_length = 3
+let g:neocomplete#sources#syntax#min_keyword_length = 2
 let g:neocomplete#lock_buffer_name_pattern = '\*ku\*'
 
 " <TAB> completion.
 inoremap <expr><TAB>   pumvisible() ? "\<C-n>" : "\<TAB>"
 inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<S-TAB>"
-"inoremap <expr><CR>    pumvisible() ? neocomplcache#close_popup() : "\<CR>"
 
-" snippets expand key
-"imap <silent> <C-e> <Plug>(neocomplcache_snippets_expand)
-"smap <silent> <C-e> <Plug>(neocomplcache_snippets_expand)
-
-" neocomplete側の設定
-" let g:neocomplete_force_overwrite_completefunc=1
-
-" if !exists('g:neocomplete#sources#omni#input_patterns')
-"   let g:neocomplete#sources#omni#input_patterns = {}
-" endif
-
+" neocompleteとclang_completeとの設定
 if !exists('g:neocomplete#force_omni_input_patterns')
-	  let g:neocomplete#force_omni_input_patterns = {}
-	endif
-	let g:neocomplete#force_overwrite_completefunc = 1
-	let g:neocomplete#force_omni_input_patterns.c =
-	      \ '[^.[:digit:] *\t]\%(\.\|->\)\w*'
-	let g:neocomplete#force_omni_input_patterns.cpp =
-	      \ '[^.[:digit:] *\t]\%(\.\|->\)\w*\|\h\w*::\w*'
-	let g:neocomplete#force_omni_input_patterns.objc =
-	      \ '\[\h\w*\s\h\?\|\h\w*\%(\.\|->\)'
-	let g:neocomplete#force_omni_input_patterns.objcpp =
-	      \ '\[\h\w*\s\h\?\|\h\w*\%(\.\|->\)\|\h\w*::\w*'
-	let g:clang_complete_auto = 0
-	let g:clang_auto_select = 0
-	"let g:clang_use_library = 1
-let g:clang_library_path  = '/usr/lib/llvm-3.4/lib'
-"let g:clang_user_options  = '2>/dev/null || exit 0"'
+		let g:neocomplete#force_omni_input_patterns = {}
+endif
+let g:neocomplete#force_overwrite_completefunc = 1
+let g:neocomplete#force_omni_input_patterns.c =
+						\ '[^.[:digit:] *\t]\%(\.\|->\)\w*'
+let g:neocomplete#force_omni_input_patterns.cpp =
+						\ '[^.[:digit:] *\t]\%(\.\|->\)\%(\h\w*\)\?\|\h\w*::\%(\h\w*\)\?'
+let g:neocomplete#force_omni_input_patterns.objc =
+						\ '\[\h\w*\s\h\?\|\h\w*\%(\.\|->\)'
+let g:neocomplete#force_omni_input_patterns.objcpp =
+						\ '\[\h\w*\s\h\?\|\h\w*\%(\.\|->\)\|\h\w*::\w*'
 
+let g:clang_complete_auto = 0
+let g:clang_periodic_quickfix = 1
+let g:clang_auto_select = 0
+let g:clang_use_library = 1
+let g:clang_use_debug = 0
+let g:clang_library_path  = '/usr/lib/llvm-3.4/lib'
+" set completeopt=menu,longest
+let g:clang_snippets = 1
+let g:clang_snippets_engine = 'clang_complete'
 "let g:neocomplcache_clang_use_library  = 1
 " Clangバイナリがある場所を指定する
 "let g:neocomplcache_clang_library_path='/usr/lib/llvm-3.4/lib'
@@ -197,8 +193,52 @@ let g:clang_library_path  = '/usr/lib/llvm-3.4/lib'
 
 
 "unite
-"インサートモードで開始しない
-let g:unite_enable_start_insert = 0
+"unite prefix key.
+nnoremap [unite] <Nop>
+nmap <Space>f [unite]
+ 
+"unite general settings
+"インサートモードで開始
+let g:unite_enable_start_insert = 1
+"最近開いたファイル履歴の保存数
+let g:unite_source_file_mru_limit = 50
+ 
+"file_mruの表示フォーマットを指定。空にすると表示スピードが高速化される
+let g:unite_source_file_mru_filename_format = ''
+ 
+"現在開いているファイルのディレクトリ下のファイル一覧。
+"開いていない場合はカレントディレクトリ
+nnoremap <silent> [unite]f :<C-u>UniteWithBufferDir -buffer-name=files file<CR>
+"バッファ一覧
+nnoremap <silent> [unite]b :<C-u>Unite buffer<CR>
+"レジスタ一覧
+nnoremap <silent> [unite]r :<C-u>Unite -buffer-name=register register<CR>
+"最近使用したファイル一覧
+nnoremap <silent> [unite]m :<C-u>Unite file_mru<CR>
+"ブックマーク一覧
+nnoremap <silent> [unite]c :<C-u>Unite bookmark<CR>
+"ブックマークに追加
+nnoremap <silent> [unite]a :<C-u>UniteBookmarkAdd<CR>
+"uniteを開いている間のキーマッピング
+autocmd FileType unite call s:unite_my_settings()
+function! s:unite_my_settings()"{{{
+	"ESCでuniteを終了
+	nmap <buffer> <ESC> <Plug>(unite_exit)
+	"入力モードのときjjでノーマルモードに移動
+	imap <buffer> jj <Plug>(unite_insert_leave)
+	"入力モードのときctrl+wでバックスラッシュも削除
+	imap <buffer> <C-w> <Plug>(unite_delete_backward_path)
+	"ctrl+jで縦に分割して開く
+	nnoremap <silent> <buffer> <expr> <C-j> unite#do_action('split')
+	inoremap <silent> <buffer> <expr> <C-j> unite#do_action('split')
+	"ctrl+jで横に分割して開く
+	nnoremap <silent> <buffer> <expr> <C-l> unite#do_action('vsplit')
+	inoremap <silent> <buffer> <expr> <C-l> unite#do_action('vsplit')
+	"ctrl+oでその場所に開く
+	nnoremap <silent> <buffer> <expr> <C-o> unite#do_action('open')
+	inoremap <silent> <buffer> <expr> <C-o> unite#do_action('open')
+endfunction"}}}
+
 
 "vimfiler
 let g:vimfiler_as_default_explorer = 1
