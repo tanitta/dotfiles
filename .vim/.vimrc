@@ -69,6 +69,20 @@ set guioptions+=a
 set mouse=a
 "インサートモードから抜けると自動的にMEをオフにする
 "set iminsert=2
+
+"プロジェクトごとの設定を読み込む
+augroup vimrc-local
+  autocmd!
+  autocmd BufNewFile,BufReadPost * call s:vimrc_local(expand('<afile>:p:h'))
+augroup END
+
+function! s:vimrc_local(loc)
+  let files = findfile('.vimrc.local', escape(a:loc, ' ') . ';', -1)
+  for i in reverse(filter(files, 'filereadable(v:val)'))
+    source `=i`
+  endfor
+endfunction
+
 "---------------------------
 " Start Neobundle Settings.
 "---------------------------
