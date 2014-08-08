@@ -96,7 +96,7 @@ call neobundle#begin(expand('~/.vim/bundle/'))
 "neobundle自体をneobundleで管理
 NeoBundleFetch 'shougo/neobundle.vim'
 
-"NeoBundle 'scrooloose/nerdtree'
+NeoBundle "tyru/caw.vim"
 NeoBundle 'itchyny/lightline.vim'
 NeoBundle 'tpope/vim-fugitive'
 NeoBundle 'airblade/vim-gitgutter'
@@ -121,6 +121,18 @@ NeoBundleCheck
 "-------------------------
 " end neobundle settings.
 "-------------------------
+
+" コメントアウトを切り替えるマッピング
+" \c でカーソル行をコメントアウト
+" 再度 \c でコメントアウトを解除
+" 選択してから複数行の \c も可能
+nmap \c <Plug>(caw:I:toggle)
+vmap \c <Plug>(caw:I:toggle)
+
+" \C でコメントアウトの解除
+nmap \C <Plug>(caw:I:uncomment)
+vmap \C <Plug>(caw:I:uncomment)
+
 "jk同時押しでEsc
 call arpeggio#load()
 Arpeggionmap jk <Esc>
