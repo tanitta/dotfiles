@@ -102,9 +102,10 @@ NeoBundle 'tpope/vim-fugitive'
 NeoBundle 'airblade/vim-gitgutter'
 NeoBundle 'Shougo/unite.vim'
 NeoBundle 'Shougo/vimfiler.vim'
-"NeoBundle 'Shougo/neosnippet'
-"NeoBundle 'Shougo/neosnippet-snippets'
-NeoBundle 'Shougo/neocomplcache.git'
+" NeoBundle 'Shougo/neosnippet'
+" NeoBundle 'Shougo/neosnippet-snippets'
+" NeoBundle 'Shougo/neocomplcache.git'
+NeoBundle 'Shougo/neocomplete.git'
 NeoBundle 'Rip-Rip/clang_complete'
 
 NeoBundle 'kana/vim-arpeggio'
@@ -145,7 +146,15 @@ Arpeggiovmap jk <Esc>
 
 
 
-let g:neocomplcache_enable_at_startup = 1 
+" Disable AutoComplPop.
+let g:acp_enableAtStartup = 0
+" Use neocomplete.
+let g:neocomplete#enable_at_startup = 1
+" Use smartcase.
+let g:neocomplete#enable_smart_case = 1
+" Set minimum syntax keyword length.
+let g:neocomplete#sources#syntax#min_keyword_length = 3
+let g:neocomplete#lock_buffer_name_pattern = '\*ku\*'
 
 " <TAB> completion.
 inoremap <expr><TAB>   pumvisible() ? "\<C-n>" : "\<TAB>"
@@ -156,22 +165,28 @@ inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<S-TAB>"
 "imap <silent> <C-e> <Plug>(neocomplcache_snippets_expand)
 "smap <silent> <C-e> <Plug>(neocomplcache_snippets_expand)
 
-" neocomplcache 側の設定
-let g:neocomplcache_force_overwrite_completefunc=1
+" neocomplete側の設定
+" let g:neocomplete_force_overwrite_completefunc=1
 
-if !exists("g:neocomplcache_force_omni_patterns")
-    let g:neocomplcache_force_omni_patterns = {}
-endif
+" if !exists('g:neocomplete#sources#omni#input_patterns')
+"   let g:neocomplete#sources#omni#input_patterns = {}
+" endif
 
-" omnifunc が呼び出される場合の正規表現パターンを設定しておく
-let g:neocomplcache_force_omni_patterns.cpp = '[^.[:digit:] *\t]\%(\.\|->\)\|::'
-
-
-let g:clang_complete_auto = 0 
-let g:clang_auto_select=0
-
-let g:clang_use_library   = 1 
-let g:clang_debug=1
+if !exists('g:neocomplete#force_omni_input_patterns')
+	  let g:neocomplete#force_omni_input_patterns = {}
+	endif
+	let g:neocomplete#force_overwrite_completefunc = 1
+	let g:neocomplete#force_omni_input_patterns.c =
+	      \ '[^.[:digit:] *\t]\%(\.\|->\)\w*'
+	let g:neocomplete#force_omni_input_patterns.cpp =
+	      \ '[^.[:digit:] *\t]\%(\.\|->\)\w*\|\h\w*::\w*'
+	let g:neocomplete#force_omni_input_patterns.objc =
+	      \ '\[\h\w*\s\h\?\|\h\w*\%(\.\|->\)'
+	let g:neocomplete#force_omni_input_patterns.objcpp =
+	      \ '\[\h\w*\s\h\?\|\h\w*\%(\.\|->\)\|\h\w*::\w*'
+	let g:clang_complete_auto = 0
+	let g:clang_auto_select = 0
+	"let g:clang_use_library = 1
 let g:clang_library_path  = '/usr/lib/llvm-3.4/lib'
 "let g:clang_user_options  = '2>/dev/null || exit 0"'
 
@@ -179,6 +194,8 @@ let g:clang_library_path  = '/usr/lib/llvm-3.4/lib'
 " Clangバイナリがある場所を指定する
 "let g:neocomplcache_clang_library_path='/usr/lib/llvm-3.4/lib'
 "let g:neocomplcache_max_list=1000
+
+
 "unite
 "インサートモードで開始しない
 let g:unite_enable_start_insert = 0
