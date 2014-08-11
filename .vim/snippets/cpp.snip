@@ -1,0 +1,16 @@
+snippet     class
+abbr        class {}
+	class ${1:#:name} {
+		public:
+			$1();
+			virtual ~$1();
+	};
+
+
+snippet     classh
+abbr        class {}
+	class ${1:#:name} {
+		public:
+			$1(){};
+			virtual ~$1(){};
+	};
