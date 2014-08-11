@@ -83,6 +83,7 @@ function! s:vimrc_local(loc)
   endfor
 endfunction
 
+au QuickfixCmdPost make,grep,grepadd,vimgrep copen
 "---------------------------
 " Start Neobundle Settings.
 "---------------------------
@@ -102,11 +103,12 @@ NeoBundle 'tpope/vim-fugitive'
 NeoBundle 'airblade/vim-gitgutter'
 NeoBundle 'Shougo/unite.vim'
 NeoBundle 'Shougo/vimfiler.vim'
-" NeoBundle 'Shougo/neosnippet'
-" NeoBundle 'Shougo/neosnippet-snippets'
-" NeoBundle 'Shougo/neocomplcache.git'
+
 NeoBundle 'Shougo/neocomplete.git'
 NeoBundle 'Rip-Rip/clang_complete'
+
+NeoBundle 'Shougo/neosnippet'
+NeoBundle 'Shougo/neosnippet-snippets'
 
 NeoBundle 'kana/vim-arpeggio'
 call neobundle#end()
@@ -123,8 +125,11 @@ NeoBundleCheck
 " end neobundle settings.
 "-------------------------
 
-autocmd VimEnter * :copen
-autocmd VimEnter * :VimFilerExplorer 
+
+" Enable snipMate compatibility feature.
+let g:neosnippet#enable_snipmate_compatibility = 1
+" Tell Neosnippet about the other snippets
+let g:neosnippet#snippets_directory='~/dotfiles/.vim/snippets'
 
 " コメントアウトを切り替えるマッピング
 " \c でカーソル行をコメントアウト
@@ -152,7 +157,7 @@ Arpeggiovmap jk <Esc>
 " Disable AutoComplPop.
 let g:acp_enableAtStartup = 0
 " Use neocomplete.
-let g:neocomplete#enable_at_startup = 0
+let g:neocomplete#enable_at_startup = 1
 " Use smartcase.
 let g:neocomplete#enable_smart_case = 1
 " Set minimum syntax keyword length.
@@ -178,18 +183,37 @@ let g:neocomplete#force_omni_input_patterns.objcpp =
 						\ '\[\h\w*\s\h\?\|\h\w*\%(\.\|->\)\|\h\w*::\w*'
 
 let g:clang_complete_auto = 0
-let g:clang_periodic_quickfix = 1
 let g:clang_auto_select = 0
+let g:clang_periodic_quickfix = 0
+let g:clang_auto_select = 1
 let g:clang_use_library = 1
-let g:clang_use_debug = 0
+let g:clang_complete_copen = 0
+let g:clang_hl_errors = 0
+" let g:clang_use_debug = 0
 let g:clang_library_path  = '/usr/lib/llvm-3.4/lib'
 " set completeopt=menu,longest
-let g:clang_snippets = 1
+let g:clang_snippets = 0
 let g:clang_snippets_engine = 'clang_complete'
-"let g:neocomplcache_clang_use_library  = 1
-" Clangバイナリがある場所を指定する
-"let g:neocomplcache_clang_library_path='/usr/lib/llvm-3.4/lib'
-"let g:neocomplcache_max_list=1000
+let g:clang_user_options = '-std=c++11 -w-'
+
+
+" Plugin key-mappings.
+imap <C-k>     <Plug>(neosnippet_expand_or_jump)
+smap <C-k>     <Plug>(neosnippet_expand_or_jump)
+xmap <C-k>     <Plug>(neosnippet_expand_target)
+
+" SuperTab like snippets behavior.
+imap <expr><TAB> neosnippet#expandable_or_jumpable() ?
+\ "\<Plug>(neosnippet_expand_or_jump)"
+\: pumvisible() ? "\<C-n>" : "\<TAB>"
+smap <expr><TAB> neosnippet#expandable_or_jumpable() ?
+\ "\<Plug>(neosnippet_expand_or_jump)"
+\: "\<TAB>"
+
+" For snippet_complete marker.
+if has('conceal')
+  set conceallevel=2 concealcursor=i
+endif
 
 
 "unite
@@ -208,7 +232,8 @@ let g:unite_source_file_mru_filename_format = ''
  
 "現在開いているファイルのディレクトリ下のファイル一覧。
 "開いていない場合はカレントディレクトリ
-nnoremap <silent> [unite]f :<C-u>UniteWithBufferDir -buffer-name=files file<CR>
+" nnoremap <silent> [unite]f :<C-u>UniteWithBufferDir -buffer-name=files file<CR>
+nnoremap <silent> [unite]f :<C-u>Unite -no-split -buffer-name=files -profile-name=buffer -auto-preview file_rec/async:!<cr>
 "バッファ一覧
 nnoremap <silent> [unite]b :<C-u>Unite buffer<CR>
 "レジスタ一覧
@@ -246,11 +271,14 @@ let g:vimfiler_as_default_explorer = 1
 "command Vf VimFiler -buffer-name=explorer -split -simple -winwidth=35 -toggle -no-quit
 nnoremap <silent> <Leader>fi :<C-u>VimFilerBufferDir -split -simple -winwidth=35 -no-quit<CR>
 
+" autocmd VimEnter * :copen
+autocmd VimEnter * :VimFilerExplorer 
 "lightline
 " vim-gitgutter
 let g:gitgutter_sign_added = '✚'
 let g:gitgutter_sign_modified = '➜'
 let g:gitgutter_sign_removed = '✘'
+
 
 " lightline.vim
 let g:lightline = {
