@@ -44,6 +44,8 @@ set title "タイトルをウィンドウ枠に表示
 " オートインデントを有効にする（新しい行のインデントを現在の行と同じにする）
 set autoindent
 set tabstop=4 "タブ幅
+set shiftwidth=4
+set softtabstop=4
 
 set autoread   "外部でファイルに変更がされた場合は読みなおす
 
@@ -129,7 +131,13 @@ NeoBundleCheck
 " Enable snipMate compatibility feature.
 let g:neosnippet#enable_snipmate_compatibility = 1
 " Tell Neosnippet about the other snippets
-let g:neosnippet#snippets_directory='~/dotfiles/.vim/snippets'
+" let g:neosnippet#snippets_directory='~/dotfiles/.vim/snippets'
+" Tell Neosnippet about the other snippets
+let g:neosnippet#snippets_directory='~/.vim/bundle/vim-snippets/snippets'
+
+" 自分用 snippet ファイルの場所
+let s:my_snippet = '~/dotfiles/.vim/snippets'
+let g:neosnippet#snippets_directory = s:my_snippet
 
 " コメントアウトを切り替えるマッピング
 " \c でカーソル行をコメントアウト

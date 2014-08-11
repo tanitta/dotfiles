@@ -16,6 +16,9 @@ augroup END
 " 以下の一行は必ずcolorschemeの設定後に追加すること
 hi clear CursorLine
 
+"インサートモードから抜けると自動的にMEをオフにする
+set iminsert=2
+"
 " 'cursorline' を必要な時にだけ有効にする
 " http://d.hatena.ne.jp/thinca/20090530/1243615055
 " を少し改造、number の highlight は常に有効にする
