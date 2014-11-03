@@ -49,7 +49,7 @@ set shiftwidth=4
 set softtabstop=4
 
 set list
-set listchars=eol:¬,tab:▸. 
+set listchars=eol:¬,tab:▸.
 
 set autoread   "外部でファイルに変更がされた場合は読みなおす
 
@@ -63,6 +63,8 @@ set textwidth=0
 set nowrap
 set wrapscan   " 最後尾まで検索を終えたら次の検索で先頭に移る
 
+set hlsearch
+
 " OSのクリップボードをレジスタ指定無しで Yank, Put 出来るようにする
 set clipboard=unnamed,unnamedplus
 ""paste をオンにすれば autoindent がオフの状態のトグル
@@ -75,7 +77,7 @@ set guioptions+=a
 set mouse=a
 
 " ビルド時に自動保存
-set autowrite 
+set autowrite
 
 " 保存時に行末の空白を除去
 function! s:remove_dust()
@@ -123,11 +125,16 @@ NeoBundle 'Shougo/vimfiler.vim'
 
 NeoBundle 'Shougo/neocomplete.git'
 NeoBundle 'Rip-Rip/clang_complete'
+" NeoBundle "osyo-manga/vim-reunions"
+" NeoBundle "osyo-manga/vim-marching"
 
 NeoBundle 'Shougo/neosnippet'
 NeoBundle 'Shougo/neosnippet-snippets'
 
 NeoBundle 'kana/vim-arpeggio'
+NeoBundle 'vim-jp/cpp-vim'
+
+NeoBundle 'thinca/vim-quickrun'
 call neobundle#end()
 
 
@@ -141,6 +148,21 @@ NeoBundleCheck
 "-------------------------
 " end neobundle settings.
 "-------------------------
+
+
+"quickrun
+let g:quickrun_config = {
+\   "cpp/clang++" : {
+\       "cmdopt" : "-std=c++11 -w -pthread",
+\       "hook/time/enable" : 1
+\   },
+\}
+" <C-c> で実行を強制終了させる
+" quickrun.vim が実行していない場合には <C-c> を呼び出す
+nnoremap <expr><silent> <C-c> quickrun#is_running() ? quickrun#sweep_sessions() : "\<C-c>"
+" 実行が成功すればバッファへ、失敗すれば quickfix へ出力する
+" :QuickRun -outputter error -outputter/error/success buffer -outputter/error quickfix
+
 
 
 " Enable snipMate compatibility feature.
@@ -158,12 +180,12 @@ let g:neosnippet#snippets_directory = s:my_snippet
 " \c でカーソル行をコメントアウト
 " 再度 \c でコメントアウトを解除
 " 選択してから複数行の \c も可能
-nmap \c <Plug>(caw:I:toggle)
-vmap \c <Plug>(caw:I:toggle)
+nmap \c <Plug>(caw:i:toggle)
+vmap \c <Plug>(caw:i:toggle)
 
 " \C でコメントアウトの解除
-nmap \C <Plug>(caw:I:uncomment)
-vmap \C <Plug>(caw:I:uncomment)
+nmap \C <Plug>(caw:i:uncomment)
+vmap \C <Plug>(caw:i:uncomment)
 
 "jk同時押しでEsc
 call arpeggio#load()
@@ -175,6 +197,8 @@ Arpeggiovmap jk <Esc>
 "imap <C-k> <Plug>(neosnippet_expand_or_jump)
 "smap <C-k> <Plug>(neosnippet_expand_or_jump)
 
+"ESCでハイライトを消す
+nnoremap <Esc><Esc> :<C-u>set nohlsearch<Return>
 
 
 " Disable AutoComplPop.
@@ -187,9 +211,6 @@ let g:neocomplete#enable_smart_case = 1
 let g:neocomplete#sources#syntax#min_keyword_length = 2
 let g:neocomplete#lock_buffer_name_pattern = '\*ku\*'
 
-" <TAB> completion.
-inoremap <expr><TAB>   pumvisible() ? "\<C-n>" : "\<TAB>"
-inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<S-TAB>"
 
 " neocompleteとclang_completeとの設定
 if !exists('g:neocomplete#force_omni_input_patterns')
@@ -220,6 +241,35 @@ let g:clang_snippets_engine = 'clang_complete'
 let g:clang_user_options = '-std=c++11 -w-'
 
 
+
+" marching
+" オプションを追加する場合
+" let g:marching_clang_command_option="-std=c++11 -w"
+"
+" let g:marching_include_paths = filter(
+" 			\ split(glob('/usr/include/c++/*'), '\n') +
+" 			\ split(glob('/usr/include/*/c++/*'), '\n') +
+" 			\ split(glob('/usr/include/*/'), '\n'),
+" 			\ 'isdirectory(v:val)')
+"
+" " neocomplete.vim と併用して使用する場合
+" let g:marching_enable_neocomplete = 1
+"
+" if !exists('g:neocomplete#force_omni_input_patterns')
+"   let g:neocomplete#force_omni_input_patterns = {}
+" endif
+"
+" let g:neocomplete#force_omni_input_patterns.cpp =
+" 			\ '[^.[:digit:] *\t]\%(\.\|->\)\%(\h\w*\)\?\|\h\w*::\%(\h\w*\)\?'
+
+" 処理のタイミングを制御する
+" 環境に合わせて間隔を短くする
+" set updatetime=200
+
+" オムニ補完時に補完ワードを挿入したくない場合
+" imap <buffer> <C-x><C-o> <Plug>(marching_start_omni_complete)
+
+
 " Plugin key-mappings.
 imap <C-k>     <Plug>(neosnippet_expand_or_jump)
 smap <C-k>     <Plug>(neosnippet_expand_or_jump)
@@ -243,16 +293,16 @@ endif
 "unite prefix key.
 nnoremap [unite] <Nop>
 nmap <Space>f [unite]
- 
+
 "unite general settings
 "インサートモードで開始
 let g:unite_enable_start_insert = 1
 "最近開いたファイル履歴の保存数
 let g:unite_source_file_mru_limit = 50
- 
+
 "file_mruの表示フォーマットを指定。空にすると表示スピードが高速化される
 let g:unite_source_file_mru_filename_format = ''
- 
+
 "現在開いているファイルのディレクトリ下のファイル一覧。
 "開いていない場合はカレントディレクトリ
 " nnoremap <silent> [unite]f :<C-u>UniteWithBufferDir -buffer-name=files file<CR>
@@ -267,6 +317,9 @@ nnoremap <silent> [unite]m :<C-u>Unite file_mru<CR>
 nnoremap <silent> [unite]c :<C-u>Unite bookmark<CR>
 "ブックマークに追加
 nnoremap <silent> [unite]a :<C-u>UniteBookmarkAdd<CR>
+"ファイラの表示
+nnoremap <silent> [unite]k :<C-u>VimFilerExplorer<CR>
+
 "uniteを開いている間のキーマッピング
 autocmd FileType unite call s:unite_my_settings()
 function! s:unite_my_settings()"{{{
@@ -295,7 +348,7 @@ let g:vimfiler_as_default_explorer = 1
 nnoremap <silent> <Leader>fi :<C-u>VimFilerBufferDir -split -simple -winwidth=35 -toggle -no-quit<CR>
 
 " autocmd VimEnter * :copen
-autocmd VimEnter * :VimFilerExplorer 
+autocmd VimEnter * :VimFilerExplorer
 
 "lightline
 " vim-gitgutter

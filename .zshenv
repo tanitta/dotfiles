@@ -2,8 +2,10 @@
 export PATH="/usr/local/bin:$PATH"
 export PATH="/home/tanitta/local/bin:$PATH"
 
-export GOPATH="/home/tanitta/dev/go:$GOPATH"
-
+# export GOPATH="/home/tanitta/dev/go:$GOPATH"
+export GOROOT=$HOME/dev/go
+export GOPATH=$GOROOT/packages
+export PATH=$PATH:$GOROOT/bin
 # PATH の内容と同期している配列変数 path も使える
 path=(
     ~/bin

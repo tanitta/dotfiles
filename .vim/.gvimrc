@@ -1,16 +1,16 @@
 set guioptions-=T
 
 " Linux
-set guifont=Inconsolata\ 12
-set guifontwide=Inconsolata\ 12
+set guifont=Inconsolata\ 11
+set guifontwide=Inconsolata\ 11
 "set t_Co=256
 colorscheme newcolor
 set background=dark
 augroup gvimrc_change_LineNr_color
 		autocmd!
-	
-		autocmd InsertEnter * hi CursorLineNr guifg=#121212 guibg=#87FF00 
-		autocmd InsertLeave * hi CursorLineNr guifg=#FF8700 guibg=#303030 
+
+		autocmd InsertEnter * hi CursorLineNr guifg=#121212 guibg=#87FF00
+		autocmd InsertLeave * hi CursorLineNr guifg=#FF8700 guibg=#303030
 augroup END
 " 初期状態はcursorlineを表示しない
 " 以下の一行は必ずcolorschemeの設定後に追加すること
