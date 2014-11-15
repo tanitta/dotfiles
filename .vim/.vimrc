@@ -135,6 +135,20 @@ NeoBundle 'kana/vim-arpeggio'
 NeoBundle 'vim-jp/cpp-vim'
 
 NeoBundle 'thinca/vim-quickrun'
+
+NeoBundle 'derekwyatt/vim-scala'
+NeoBundle 'szw/vim-tags'
+NeoBundle 'majutsushi/tagbar'
+
+NeoBundle 'mattn/emmet-vim'
+NeoBundle 'tpope/vim-surround'
+" NeoBundle 'open-browser.vim'
+" NeoBundle 'mattn/webapi-vim'
+" NeoBundle 'tell-k/vim-browsereload-mac'
+NeoBundle 'hail2u/vim-css3-syntax'
+" NeoBundle 'taichouchou2/html5.vim'
+" NeoBundle 'taichouchou2/vim-javascript'
+" NeoBundle 'kchmck/vim-coffee-script'
 call neobundle#end()
 
 
@@ -148,6 +162,19 @@ NeoBundleCheck
 "-------------------------
 " end neobundle settings.
 "-------------------------
+
+
+augroup vimrc-local
+  autocmd!
+  autocmd BufNewFile,BufReadPost * call s:vimrc_local(expand('<afile>:p:h'))
+augroup END
+
+function! s:vimrc_local(loc)
+  let files = findfile('.vimrc.local', escape(a:loc, ' ') . ';', -1)
+  for i in reverse(filter(files, 'filereadable(v:val)'))
+    source `=i`
+  endfor
+endfunction
 
 
 "quickrun
@@ -319,6 +346,8 @@ nnoremap <silent> [unite]c :<C-u>Unite bookmark<CR>
 nnoremap <silent> [unite]a :<C-u>UniteBookmarkAdd<CR>
 "ファイラの表示
 nnoremap <silent> [unite]k :<C-u>VimFilerExplorer<CR>
+
+nnoremap <silent> [unite]t :<C-u>TagbarToggle<CR>
 
 "uniteを開いている間のキーマッピング
 autocmd FileType unite call s:unite_my_settings()
