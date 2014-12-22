@@ -7,8 +7,14 @@ export GOROOT=$HOME/dev/go
 export GOPATH=$GOROOT/packages
 export PATH=$PATH:$GOROOT/bin
 
+export LUA_PATH=~/dev/lua_lib
 # export PATH=$PATH:~/dev/activator-1.2.10-minimal
 export PATH=$PATH:~/dev/play-2.2.5
+
+#rbenv
+export PATH="$HOME/.rbenv/bin:$PATH"
+eval "$(rbenv init - zsh)"
+
 # PATH の内容と同期している配列変数 path も使える
 path=(
     ~/bin

@@ -1,7 +1,7 @@
 
 set t_Co=256
 set laststatus=2
-
+set noswapfile
 "ColorScheme
 colorscheme molokai
 :syntax on
@@ -22,8 +22,8 @@ augroup vimrc_change_cursorline_color
 		" インサートモードに入った時にカーソル行の色をブルーグリーンにする
 	"	autocmd InsertEnter * highlight CursorLine ctermbg=green
 
-		autocmd InsertEnter * hi LineNr ctermbg = green
-		autocmd InsertLeave * hi LineNr ctermbg = gray
+		autocmd InsertEnter * hi CursorLineNr ctermbg = 118
+		autocmd InsertLeave * hi CursorLineNr ctermbg = 236
 
 		"guibg=#005f87 | highlight CursorColumn ctermbg=24
 		"guibg=#005f87
@@ -136,9 +136,10 @@ NeoBundle 'vim-jp/cpp-vim'
 
 NeoBundle 'thinca/vim-quickrun'
 
-NeoBundle 'derekwyatt/vim-scala'
 NeoBundle 'szw/vim-tags'
 NeoBundle 'majutsushi/tagbar'
+
+NeoBundle 'derekwyatt/vim-scala'
 
 NeoBundle 'mattn/emmet-vim'
 NeoBundle 'tpope/vim-surround'
@@ -256,7 +257,7 @@ let g:neocomplete#force_omni_input_patterns.objcpp =
 let g:clang_complete_auto = 0
 let g:clang_auto_select = 0
 let g:clang_periodic_quickfix = 0
-let g:clang_auto_select = 1
+
 let g:clang_use_library = 1
 let g:clang_complete_copen = 0
 let g:clang_hl_errors = 0
@@ -346,8 +347,10 @@ nnoremap <silent> [unite]c :<C-u>Unite bookmark<CR>
 nnoremap <silent> [unite]a :<C-u>UniteBookmarkAdd<CR>
 "ファイラの表示
 nnoremap <silent> [unite]k :<C-u>VimFilerExplorer<CR>
-
+"tagbarの表示
 nnoremap <silent> [unite]t :<C-u>TagbarToggle<CR>
+
+nnoremap <silent> [unite]q :<C-u>QuickRun cpp/clang++ -outputter/buffer/split ":botright"<CR>
 
 "uniteを開いている間のキーマッピング
 autocmd FileType unite call s:unite_my_settings()
@@ -377,7 +380,7 @@ let g:vimfiler_as_default_explorer = 1
 nnoremap <silent> <Leader>fi :<C-u>VimFilerBufferDir -split -simple -winwidth=35 -toggle -no-quit<CR>
 
 " autocmd VimEnter * :copen
-autocmd VimEnter * :VimFilerExplorer
+" autocmd VimEnter * :VimFilerExplorer
 
 "lightline
 " vim-gitgutter

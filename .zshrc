@@ -1,30 +1,30 @@
 #変換候補をハイライト
-autoload -U compinit
-compinit
-zstyle ':completion:*:default' menu select=2
+# autoload -U compinit
+# compinit
+# zstyle ':completion:*:default' menu select=2
 
 # 名前で色を付けるようにする
-autoload colors
-colors
+# autoload colors
+# colors
 
 # LS_COLORSを設定しておく
-export LS_COLORS='di=34:ln=35:so=32:pi=33:ex=31:bd=46;34:cd=43;34:su=41;30:sg=46;30:tw=42;30:ow=43;30'
+# export LS_COLORS='di=34:ln=35:so=32:pi=33:ex=31:bd=46;34:cd=43;34:su=41;30:sg=46;30:tw=42;30:ow=43;30'
 
 # ファイル補完候補に色を付ける
-zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS}
+# zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS}
 
 # Emacs ライクな操作を有効にする（文字入力中に Ctrl-F,B でカーソル移動など）
 # Vi ライクな操作が好みであれば `bindkey -v` とする
 bindkey -v
 
-if which pbcopy >/dev/null 2>&1 ; then 
-		# Mac  
+if which pbcopy >/dev/null 2>&1 ; then
+		# Mac
 		alias -g C='| pbcopy'
-elif which xsel >/dev/null 2>&1 ; then 
+elif which xsel >/dev/null 2>&1 ; then
 		# Linux
 		alias -g C='| xsel --input --clipboard'
-elif which putclip >/dev/null 2>&1 ; then 
-		# Cygwin 
+elif which putclip >/dev/null 2>&1 ; then
+		# Cygwin
 		alias -g C='| putclip'
 fi
 # 自動補完を有効にする
@@ -77,3 +77,5 @@ zstyle ':completion:*:default' menu select=1
 # ここではデフォルトのセットから / を抜いたものとする
 # こうすると、 Ctrl-W でカーソル前の1単語を削除したとき、 / までで削除が止まる
 WORDCHARS='*?_-.[]~=&;!#$%^(){}<>'
+
+# export ZSH_THEME="cypher"

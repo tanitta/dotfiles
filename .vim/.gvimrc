@@ -1,4 +1,5 @@
 set guioptions-=T
+set guioptions-=M
 
 " Linux
 set guifont=Inconsolata\ 11
