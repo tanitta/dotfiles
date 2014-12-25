@@ -124,9 +124,9 @@ NeoBundle 'Shougo/unite.vim'
 NeoBundle 'Shougo/vimfiler.vim'
 
 NeoBundle 'Shougo/neocomplete.git'
-NeoBundle 'Rip-Rip/clang_complete'
-" NeoBundle "osyo-manga/vim-reunions"
-" NeoBundle "osyo-manga/vim-marching"
+" NeoBundle 'Rip-Rip/clang_complete'
+NeoBundle "osyo-manga/vim-reunions"
+NeoBundle "osyo-manga/vim-marching"
 
 NeoBundle 'Shougo/neosnippet'
 NeoBundle 'Shougo/neosnippet-snippets'
@@ -241,61 +241,65 @@ let g:neocomplete#lock_buffer_name_pattern = '\*ku\*'
 
 
 " neocompleteとclang_completeとの設定
-if !exists('g:neocomplete#force_omni_input_patterns')
-		let g:neocomplete#force_omni_input_patterns = {}
-endif
-let g:neocomplete#force_overwrite_completefunc = 1
-let g:neocomplete#force_omni_input_patterns.c =
-						\ '[^.[:digit:] *\t]\%(\.\|->\)\w*'
-let g:neocomplete#force_omni_input_patterns.cpp =
-						\ '[^.[:digit:] *\t]\%(\.\|->\)\%(\h\w*\)\?\|\h\w*::\%(\h\w*\)\?'
-let g:neocomplete#force_omni_input_patterns.objc =
-						\ '\[\h\w*\s\h\?\|\h\w*\%(\.\|->\)'
-let g:neocomplete#force_omni_input_patterns.objcpp =
-						\ '\[\h\w*\s\h\?\|\h\w*\%(\.\|->\)\|\h\w*::\w*'
-
-let g:clang_complete_auto = 0
-let g:clang_auto_select = 0
-let g:clang_periodic_quickfix = 0
-
-let g:clang_use_library = 1
-let g:clang_complete_copen = 0
-let g:clang_hl_errors = 0
-" let g:clang_use_debug = 0
-let g:clang_library_path  = '/usr/lib/llvm-3.4/lib'
-" set completeopt=menu,longest
-let g:clang_snippets = 0
-let g:clang_snippets_engine = 'clang_complete'
-let g:clang_user_options = '-std=c++11 -w-'
+" if !exists('g:neocomplete#force_omni_input_patterns')
+" 		let g:neocomplete#force_omni_input_patterns = {}
+" endif
+" let g:neocomplete#force_overwrite_completefunc = 1
+" let g:neocomplete#force_omni_input_patterns.c =
+" 						\ '[^.[:digit:] *\t]\%(\.\|->\)\w*'
+" let g:neocomplete#force_omni_input_patterns.cpp =
+" 						\ '[^.[:digit:] *\t]\%(\.\|->\)\%(\h\w*\)\?\|\h\w*::\%(\h\w*\)\?'
+" let g:neocomplete#force_omni_input_patterns.objc =
+" 						\ '\[\h\w*\s\h\?\|\h\w*\%(\.\|->\)'
+" let g:neocomplete#force_omni_input_patterns.objcpp =
+" 						\ '\[\h\w*\s\h\?\|\h\w*\%(\.\|->\)\|\h\w*::\w*'
+"
+" let g:clang_complete_auto = 0
+" let g:clang_auto_select = 0
+" let g:clang_periodic_quickfix = 0
+"
+" let g:clang_use_library = 1
+" let g:clang_complete_copen = 0
+" let g:clang_hl_errors = 0
+" " let g:clang_use_debug = 0
+" let g:clang_library_path  = '/usr/lib/llvm-3.4/lib'
+" " set completeopt=menu,longest
+" let g:clang_snippets = 0
+" let g:clang_snippets_engine = 'clang_complete'
+" let g:clang_user_options = '-std=c++11 -w-'
 
 
 
 " marching
 " オプションを追加する場合
-" let g:marching_clang_command_option="-std=c++11 -w"
-"
-" let g:marching_include_paths = filter(
-" 			\ split(glob('/usr/include/c++/*'), '\n') +
-" 			\ split(glob('/usr/include/*/c++/*'), '\n') +
-" 			\ split(glob('/usr/include/*/'), '\n'),
-" 			\ 'isdirectory(v:val)')
-"
-" " neocomplete.vim と併用して使用する場合
-" let g:marching_enable_neocomplete = 1
-"
-" if !exists('g:neocomplete#force_omni_input_patterns')
-"   let g:neocomplete#force_omni_input_patterns = {}
-" endif
-"
-" let g:neocomplete#force_omni_input_patterns.cpp =
-" 			\ '[^.[:digit:] *\t]\%(\.\|->\)\%(\h\w*\)\?\|\h\w*::\%(\h\w*\)\?'
+let g:marching_clang_command_option="-std=c++11 -w"
+
+let g:marching_include_paths = filter(
+			\ split(glob('/usr/include/c++/*'), '\n') +
+			\ split(glob('/usr/include/*/c++/*'), '\n') +
+			\ split(glob('/usr/include/*/'), '\n'),
+			\ 'isdirectory(v:val)')
+
+
+
+" neocomplete.vim と併用して使用する場合
+let g:marching_enable_neocomplete = 1
+
+if !exists('g:neocomplete#force_omni_input_patterns')
+  let g:neocomplete#force_omni_input_patterns = {}
+endif
+
+let g:neocomplete#force_omni_input_patterns.cpp =
+			\ '[^.[:digit:] *\t]\%(\.\|->\)\%(\h\w*\)\?\|\h\w*::\%(\h\w*\)\?'
+
 
 " 処理のタイミングを制御する
 " 環境に合わせて間隔を短くする
-" set updatetime=200
+set updatetime=200
 
 " オムニ補完時に補完ワードを挿入したくない場合
-" imap <buffer> <C-x><C-o> <Plug>(marching_start_omni_complete)
+imap <buffer> <C-x><C-o> <Plug>(marching_start_omni_complete)
+
 
 
 " Plugin key-mappings.
