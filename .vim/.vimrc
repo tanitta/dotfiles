@@ -125,8 +125,8 @@ NeoBundle 'Shougo/vimfiler.vim'
 
 NeoBundle 'Shougo/neocomplete.git'
 " NeoBundle 'Rip-Rip/clang_complete'
-NeoBundle "osyo-manga/vim-reunions"
-NeoBundle "osyo-manga/vim-marching"
+NeoBundle 'osyo-manga/vim-reunions'
+NeoBundle 'osyo-manga/vim-marching'
 
 NeoBundle 'Shougo/neosnippet'
 NeoBundle 'Shougo/neosnippet-snippets'
@@ -320,11 +320,33 @@ if has('conceal')
   set conceallevel=2 concealcursor=i
 endif
 
+" オレオレキーバインド体系
+nnoremap [quickrun] <Nop>
+nmap <Space>q [quickrun]
+nnoremap <silent> [quickrun]c :<C-u>QuickRun cpp/clang++ -outputter/buffer/split ":botright"<CR>
+nnoremap <silent> [quickrun]v :<C-u>QuickRun vim -outputter/buffer/split ":botright"<CR>
+
+nnoremap [make] <Nop>
+nmap <Space>m [make]
+nnoremap <silent> [make]m :<C-u>make!<Enter><CR>
+nnoremap <silent> [make]M :<C-u>make! && make run<Enter><CR>
+nnoremap <silent> [make]r :<C-u>make run<Enter><CR>
+nnoremap <silent> [make]t :<C-u>!ctags -R<Enter><CR>
+nnoremap <silent> [make]d :<C-u>!doxygen<Enter><CR>
+
+nnoremap [window] <Nop>
+nmap <Space>w [window]
+"ファイラの表示
+nnoremap <silent> [window]e :<C-u>VimFilerExplorer<CR>
+"tagbarの表示
+nnoremap <silent> [window]t :<C-u>TagbarToggle<CR>
+nnoremap <silent> [window]c :<C-u>cclose<CR>
+nnoremap <silent> [window]o :<C-u>copen<CR>
 
 "unite
 "unite prefix key.
 nnoremap [unite] <Nop>
-nmap <Space>f [unite]
+nmap <Space>u [unite]
 
 "unite general settings
 "インサートモードで開始
@@ -354,7 +376,6 @@ nnoremap <silent> [unite]k :<C-u>VimFilerExplorer<CR>
 "tagbarの表示
 nnoremap <silent> [unite]t :<C-u>TagbarToggle<CR>
 
-nnoremap <silent> [unite]q :<C-u>QuickRun cpp/clang++ -outputter/buffer/split ":botright"<CR>
 
 "uniteを開いている間のキーマッピング
 autocmd FileType unite call s:unite_my_settings()
