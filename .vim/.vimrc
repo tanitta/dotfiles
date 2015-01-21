@@ -52,6 +52,15 @@ set list
 set listchars=eol:¬,tab:▸.
 
 set autoread   "外部でファイルに変更がされた場合は読みなおす
+let &t_ti .= "\e[?1004h"
+let &t_te .= "\e[?1004l"
+map <special> <Esc>[I echo "hoge"
+" augroup vimrc-checktime
+"   autocmd!
+"   " autocmd WinEnter * checktime
+"
+"   autocmd FocusGained * :echo "hoge"
+" augroup END
 
 set showcmd " 入力中のコマンドをステータスに表示する
 
@@ -122,6 +131,10 @@ NeoBundle 'tpope/vim-fugitive'
 NeoBundle 'airblade/vim-gitgutter'
 NeoBundle 'Shougo/unite.vim'
 NeoBundle 'Shougo/vimfiler.vim'
+NeoBundle 'Shougo/unite-build'
+NeoBundle "git://github.com/osyo-manga/unite-quickfix.git"
+NeoBundle 'rhysd/quickrun-unite-quickfix-outputter'
+NeoBundle 'nathanaelkane/vim-indent-guides'
 
 NeoBundle 'Shougo/neocomplete.git'
 " NeoBundle 'Rip-Rip/clang_complete'
@@ -135,6 +148,7 @@ NeoBundle 'kana/vim-arpeggio'
 NeoBundle 'vim-jp/cpp-vim'
 
 NeoBundle 'thinca/vim-quickrun'
+NeoBundle "jceb/vim-hier"
 
 NeoBundle 'szw/vim-tags'
 NeoBundle 'majutsushi/tagbar'
@@ -150,6 +164,11 @@ NeoBundle 'hail2u/vim-css3-syntax'
 " NeoBundle 'taichouchou2/html5.vim'
 " NeoBundle 'taichouchou2/vim-javascript'
 " NeoBundle 'kchmck/vim-coffee-script'
+
+"Haskell
+NeoBundle 'kana/vim-filetype-haskell' "スマートインデント
+NeoBundle 'eagletmt/ghcmod-vim' "型の表示用 sudo apt-get install apt-get ghc-mod すること
+NeoBundle 'ujihisa/neco-ghc' "補完
 call neobundle#end()
 
 
@@ -177,6 +196,12 @@ function! s:vimrc_local(loc)
   endfor
 endfunction
 
+" vim-indent-guides
+" let g:indent_guides_auto_colors=0
+" autocmd VimEnter,Colorscheme * :hi IndentGuidesOdd   ctermbg=110
+" autocmd VimEnter,Colorscheme * :hi IndentGuidesEven  ctermbg=140
+" let g:indent_guides_enable_on_vim_startup=1
+" let g:indent_guides_guide_size=1
 
 "quickrun
 let g:quickrun_config = {
@@ -184,7 +209,47 @@ let g:quickrun_config = {
 \       "cmdopt" : "-std=c++11 -w -pthread",
 \       "hook/time/enable" : 1
 \   },
+\	"make" : {
+\		"command" : "make",
+\		"exec" : "%c %o",
+\		"runner" : "vimproc",
+\	},
+\	"run" : {
+\		"command" : "make",
+\		"cmdopt" : "run",
+\		"exec" : "%c %o",
+\		"outputter" : "my_outputter",
+\		"runner" : "vimproc",
+\	},
 \}
+
+" :QuickRun -outputter my_outputter
+" プロセスの実行中は、buffer に出力し、
+" プロセスが終了したら、quickfix へ出力を行う
+
+" 既存の outputter をコピーして拡張
+let my_outputter = quickrun#outputter#multi#new()
+let my_outputter.config.targets = ["buffer", "unite_quickfix"]
+" let g:quickrun_unite_quickfix_outputter_args = {-no-quit -no-start-insert -direction=botright -no-focus -winheight=8, "-log"}
+" let g:quickrun_unite_quickfix_outputter_args = ['-start-insert']
+function! my_outputter.init(session)
+    " quickfix を閉じる
+    :cclose
+    " 元の処理を呼び出す
+    call call(quickrun#outputter#multi#new().init, [a:session], self)
+endfunction
+
+function! my_outputter.finish(session)
+    call call(quickrun#outputter#multi#new().finish, [a:session], self)
+    " 出力バッファの削除
+    bwipeout [quickrun
+    " vim-hier を使用している場合は、ハイライトを更新したりとか
+    " :HierUpdate
+endfunction
+
+" quickrun に outputter を登録
+call quickrun#register_outputter("my_outputter", my_outputter)
+
 " <C-c> で実行を強制終了させる
 " quickrun.vim が実行していない場合には <C-c> を呼び出す
 nnoremap <expr><silent> <C-c> quickrun#is_running() ? quickrun#sweep_sessions() : "\<C-c>"
@@ -227,6 +292,7 @@ Arpeggiovmap jk <Esc>
 
 "ESCでハイライトを消す
 nnoremap <Esc><Esc> :<C-u>set nohlsearch<Return>
+nnoremap <Esc><Esc> :<C-u>GhcModTypeClear<Return>
 
 
 " Disable AutoComplPop.
@@ -325,12 +391,19 @@ nnoremap [quickrun] <Nop>
 nmap <Space>q [quickrun]
 nnoremap <silent> [quickrun]c :<C-u>QuickRun cpp/clang++ -outputter/buffer/split ":botright"<CR>
 nnoremap <silent> [quickrun]v :<C-u>QuickRun vim -outputter/buffer/split ":botright"<CR>
+nnoremap <silent> [quickrun]h :<C-u>QuickRun haskell -outputter/buffer/split ":botright"<CR>
 
 nnoremap [make] <Nop>
 nmap <Space>m [make]
-nnoremap <silent> [make]m :<C-u>make!<Enter><CR>
+" nnoremap <silent> [make]m :<C-u>make!<Enter><CR>
+nnoremap <silent> [make]m :<C-u>Unite -no-quit -no-start-insert -direction=botright -no-focus -winheight=8 -log build:!<CR>
+" nnoremap <silent> [make]m :<C-u>QuickRun make -outputter/buffer/split ":botright 8sp"<CR>
 nnoremap <silent> [make]M :<C-u>make! && make run<Enter><CR>
-nnoremap <silent> [make]r :<C-u>make run<Enter><CR>
+
+" nnoremap <silent> [make]r :<C-u>make run<Enter><CR>
+nnoremap <silent> [make]r :<C-u>Unite -no-quit -no-start-insert -direction=botright -no-focus -winheight=8 -log build:make:run:!<CR>
+" nnoremap <silent> [make]r :<C-u>QuickRun run -outputter/buffer/split ":botright 8sp"<CR>
+
 nnoremap <silent> [make]t :<C-u>!ctags -R<Enter><CR>
 nnoremap <silent> [make]d :<C-u>!doxygen<Enter><CR>
 
@@ -342,6 +415,10 @@ nnoremap <silent> [window]e :<C-u>VimFilerExplorer<CR>
 nnoremap <silent> [window]t :<C-u>TagbarToggle<CR>
 nnoremap <silent> [window]c :<C-u>cclose<CR>
 nnoremap <silent> [window]o :<C-u>copen<CR>
+
+nnoremap [haskell] <Nop>
+nmap <Space>h [haskell]
+nnoremap <silent> [haskell]t :<C-u>GhcModType<CR>
 
 "unite
 "unite prefix key.
@@ -374,7 +451,7 @@ nnoremap <silent> [unite]a :<C-u>UniteBookmarkAdd<CR>
 "ファイラの表示
 nnoremap <silent> [unite]k :<C-u>VimFilerExplorer<CR>
 "tagbarの表示
-nnoremap <silent> [unite]t :<C-u>TagbarToggle<CR>
+nnoremap <silent> [unite]t :<C-u>Unite -toggle<CR>
 
 
 "uniteを開いている間のキーマッピング

@@ -1,9 +1,19 @@
 set guioptions-=T
 set guioptions-=M
 
+
+set guioptions-=m
+set guioptions-=T
+set guioptions-=r
+set guioptions-=R
+set guioptions-=l
+set guioptions-=L
+set guioptions-=b
+set guioptions-=F
+
 " Linux
-set guifont=Inconsolata\ 11
-set guifontwide=Inconsolata\ 11
+set guifont=Inconsolata\ 9
+set guifontwide=Inconsolata\ 9
 "set t_Co=256
 colorscheme newcolor
 set background=dark
