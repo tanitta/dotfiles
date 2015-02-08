@@ -11,9 +11,14 @@ export LUA_PATH=~/dev/lua_lib
 # export PATH=$PATH:~/dev/activator-1.2.10-minimal
 export PATH=$PATH:~/dev/play-2.2.5
 
+# Haskellとか
+export PATH=$PATH:~/.cabal/bin
+
 #rbenv
 export PATH="$HOME/.rbenv/bin:$PATH"
 eval "$(rbenv init - zsh)"
+
+export PATH="$PATH:/usr/local/jruby/bin"
 
 # PATH の内容と同期している配列変数 path も使える
 path=(

@@ -15,23 +15,23 @@ highlight Normal ctermbg=none
 set ruler
 set number         " 行番号を表示する
 set cursorline     " カーソル行の背景色を変える
-"set cursorcolumn   " カーソル位置のカラムの背景色を変える
+" set cursorcolumn   " カーソル位置のカラムの背景色を変える
 " インサートモードに入った時にカーソル行(列)の色を変更する
 augroup vimrc_change_cursorline_color
-		autocmd!
-		" インサートモードに入った時にカーソル行の色をブルーグリーンにする
-	"	autocmd InsertEnter * highlight CursorLine ctermbg=green
+    autocmd!
+    " インサートモードに入った時にカーソル行の色をブルーグリーンにする
+    "autocmd InsertEnter * highlight CursorLine ctermbg=green
 
-		autocmd InsertEnter * hi CursorLineNr ctermbg = 118
-		autocmd InsertLeave * hi CursorLineNr ctermbg = 236
+    autocmd InsertEnter * hi CursorLineNr ctermbg = 118
+    autocmd InsertLeave * hi CursorLineNr ctermbg = 236
 
-		"guibg=#005f87 | highlight CursorColumn ctermbg=24
-		"guibg=#005f87
-		"
-		"     インサートモードを抜けた時にカーソル行の色を黒に近いダークグレーにする
-		"autocmd InsertLeave * highlight CursorLine ctermbg=236
-		"guibg=#303030 | highlight CursorColumn ctermbg=236
-		"guibg=#303030
+    "guibg=#005f87 | highlight CursorColumn ctermbg=24
+    "guibg=#005f87
+    "
+    "     インサートモードを抜けた時にカーソル行の色を黒に近いダークグレーにする
+    "autocmd InsertLeave * highlight CursorLine ctermbg=236
+    "guibg=#303030 | highlight CursorColumn ctermbg=236
+    "guibg=#303030
 augroup END
 
 set backspace=indent,eol,start " Backspaceキーの影響範囲に制限を設けない
@@ -48,8 +48,19 @@ set tabstop=4 "タブ幅
 set shiftwidth=4
 set softtabstop=4
 
+" set autoindent
+" set tabstop=4
+" set expandtab
+" set shiftwidth=4
+"
+"空行のインデントを削除しないようにする
+nnoremap o oX<C-h>
+nnoremap O OX<C-h>
+inoremap <CR> <CR>X<C-h>
+
 set list
-set listchars=eol:¬,tab:▸.
+" set listchars=eol:¬,tab:▸.
+set listchars=eol:↴,tab:┆\ 
 
 set autoread   "外部でファイルに変更がされた場合は読みなおす
 let &t_ti .= "\e[?1004h"
@@ -89,27 +100,15 @@ set mouse=a
 set autowrite
 
 " 保存時に行末の空白を除去
-function! s:remove_dust()
-    let cursor = getpos(".")
-    " 保存時に行末の空白を除去する
-    %s/\s\+$//ge
-    call setpos(".", cursor)
-    unlet cursor
-endfunction
+" function! s:remove_dust()
+"     let cursor = getpos(".")
+"     " 保存時に行末の空白を除去する
+"     %s/\s\+$//ge
+"     call setpos(".", cursor)
+"     unlet cursor
+" endfunction
 
-autocmd BufWritePre * call <SID>remove_dust()
-"プロジェクトごとの設定を読み込む
-augroup vimrc-local
-  autocmd!
-  autocmd BufNewFile,BufReadPost * call s:vimrc_local(expand('<afile>:p:h'))
-augroup END
-
-function! s:vimrc_local(loc)
-  let files = findfile('.vimrc.local', escape(a:loc, ' ') . ';', -1)
-  for i in reverse(filter(files, 'filereadable(v:val)'))
-    source `=i`
-  endfor
-endfunction
+" autocmd BufWritePre * call <SID>remove_dust()
 
 au QuickfixCmdPost make,grep,grepadd,vimgrep copen
 "---------------------------
@@ -134,7 +133,11 @@ NeoBundle 'Shougo/vimfiler.vim'
 NeoBundle 'Shougo/unite-build'
 NeoBundle "git://github.com/osyo-manga/unite-quickfix.git"
 NeoBundle 'rhysd/quickrun-unite-quickfix-outputter'
-NeoBundle 'nathanaelkane/vim-indent-guides'
+" NeoBundle 'nathanaelkane/vim-indent-guides'
+NeoBundle 'Yggdroot/indentLine'
+
+NeoBundle "osyo-manga/vim-brightest"
+
 
 NeoBundle 'Shougo/neocomplete.git'
 " NeoBundle 'Rip-Rip/clang_complete'
@@ -183,7 +186,7 @@ NeoBundleCheck
 " end neobundle settings.
 "-------------------------
 
-
+"プロジェクトごとの設定を読み込む
 augroup vimrc-local
   autocmd!
   autocmd BufNewFile,BufReadPost * call s:vimrc_local(expand('<afile>:p:h'))
@@ -196,12 +199,25 @@ function! s:vimrc_local(loc)
   endfor
 endfunction
 
+" ハイライトを有効にします（既定値）
+" BrightestEnable
+" ハイライトするグループ名を設定します
+" アンダーラインで表示する
+let g:brightest#highlight = {
+\   "group" : "BrightestUnderline"
+\}
+
 " vim-indent-guides
-" let g:indent_guides_auto_colors=0
+" let g:indent_guides_auto_colors=1
 " autocmd VimEnter,Colorscheme * :hi IndentGuidesOdd   ctermbg=110
 " autocmd VimEnter,Colorscheme * :hi IndentGuidesEven  ctermbg=140
 " let g:indent_guides_enable_on_vim_startup=1
 " let g:indent_guides_guide_size=1
+
+" indentLine
+let g:indentLine_color_term = 111
+let g:indentLine_color_gui = '#708090'
+let g:indentLine_char = '│' "use ¦, ┆ or │
 
 "quickrun
 let g:quickrun_config = {
@@ -220,6 +236,10 @@ let g:quickrun_config = {
 \		"exec" : "%c %o",
 \		"outputter" : "my_outputter",
 \		"runner" : "vimproc",
+\	},
+\	"rp5" : {
+\		"command" : "rp5",
+\		"cmdopt" : "run"
 \	},
 \}
 
@@ -420,6 +440,11 @@ nnoremap [haskell] <Nop>
 nmap <Space>h [haskell]
 nnoremap <silent> [haskell]t :<C-u>GhcModType<CR>
 
+nnoremap [ruby] <Nop>
+nmap <Space>r [ruby]
+nnoremap <silent> [ruby]i :<C-u>QuickRun irb<CR>
+nnoremap <silent> [ruby]m :<C-u>QuickRun ruby<CR>
+nnoremap <silent> [ruby]p :<C-u>QuickRun rp5<CR>
 "unite
 "unite prefix key.
 nnoremap [unite] <Nop>

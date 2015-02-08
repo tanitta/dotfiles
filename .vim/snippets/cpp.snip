@@ -14,3 +14,20 @@ abbr        class {}
 			$1(){};
 			virtual ~$1(){};
 	};
+
+snippet     doxy
+abbr        doxy_comment //!.. /*!..*/
+	//! ${1:abstract}
+	/*!
+	 * ${2:detail}
+	 */
+
+snippet     doxya
+abbr        doxy_comment_abstract //!
+	//! ${1:abstract}
+
+snippet     doxyd
+abbr        doxy_comment_detail /**
+	/*!
+	 * ${1:detail}
+	 */

@@ -79,3 +79,6 @@ zstyle ':completion:*:default' menu select=1
 WORDCHARS='*?_-.[]~=&;!#$%^(){}<>'
 
 # export ZSH_THEME="cypher"
+
+alias efs='dev/openFrameworks/apps/myApps/efs/bin/efs'
+
