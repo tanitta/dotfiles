@@ -3,12 +3,14 @@ set t_Co=256
 set laststatus=2
 set noswapfile
 "ColorScheme
-colorscheme molokai
+colorscheme newcolor
 :syntax on
 
-let g:molokai_original = 0
+" let g:molokai_original = 0
 "let g:rehash256 = 1
 set background=dark
+
+set guiheadroom=0
 
 "半透明
 highlight Normal ctermbg=none
@@ -138,6 +140,7 @@ NeoBundle 'Yggdroot/indentLine'
 
 NeoBundle "osyo-manga/vim-brightest"
 
+NeoBundle 'tpope/vim-surround'
 
 NeoBundle 'Shougo/neocomplete.git'
 " NeoBundle 'Rip-Rip/clang_complete'
@@ -158,6 +161,13 @@ NeoBundle 'majutsushi/tagbar'
 
 NeoBundle 'derekwyatt/vim-scala'
 
+" Processing
+NeoBundle "sophacles/vim-processing"
+augroup Processing
+    autocmd!
+    autocmd BufNewFile *.pde NeoBundleSource vim-processing
+    autocmd BufRead    *.pde NeoBundleSource vim-processing
+augroup END
 NeoBundle 'mattn/emmet-vim'
 NeoBundle 'tpope/vim-surround'
 " NeoBundle 'open-browser.vim'
@@ -167,11 +177,28 @@ NeoBundle 'hail2u/vim-css3-syntax'
 " NeoBundle 'taichouchou2/html5.vim'
 " NeoBundle 'taichouchou2/vim-javascript'
 " NeoBundle 'kchmck/vim-coffee-script'
+" 
+NeoBundle 'koron/codic-vim'
+NeoBundle 'rhysd/unite-codic.vim'
 
 "Haskell
 NeoBundle 'kana/vim-filetype-haskell' "スマートインデント
 NeoBundle 'eagletmt/ghcmod-vim' "型の表示用 sudo apt-get install apt-get ghc-mod すること
+let $PATH = $PATH . ':' . expand('~/.cabal/bin')
 NeoBundle 'ujihisa/neco-ghc' "補完
+
+NeoBundle 'Lokaltog/powerline-fontpatcher'
+
+NeoBundle 'cocopon/colorswatch.vim'
+
+"GLSL
+NeoBundle 'glsl.vim'
+
+NeoBundle 'Lokaltog/vim-easymotion'
+
+autocmd BufNewFile,BufRead *.frag,*.vert,*.fp,*.vp,*.glsl
+	\ set filetype=glsl
+
 call neobundle#end()
 
 
@@ -221,6 +248,10 @@ let g:indentLine_char = '│' "use ¦, ┆ or │
 
 "quickrun
 let g:quickrun_config = {
+\   "_" : {
+\       "runner" : "vimproc",
+\       "runner/vimproc/updatetime" : 60
+\   },
 \   "cpp/clang++" : {
 \       "cmdopt" : "-std=c++11 -w -pthread",
 \       "hook/time/enable" : 1
@@ -242,6 +273,13 @@ let g:quickrun_config = {
 \		"cmdopt" : "run"
 \	},
 \}
+
+let g:quickrun_config.processing = {
+\       "runner" : "vimproc",
+\       "runner/vimproc/updatetime" : 60,
+\     'command': 'processing-java',
+\     'exec': '%c --sketch=%s:p:h/ --output=/tmp/processing --run --force' }
+
 
 " :QuickRun -outputter my_outputter
 " プロセスの実行中は、buffer に出力し、
@@ -408,15 +446,15 @@ endif
 
 " オレオレキーバインド体系
 nnoremap [quickrun] <Nop>
-nmap <Space>q [quickrun]
+nmap \q [quickrun]
 nnoremap <silent> [quickrun]c :<C-u>QuickRun cpp/clang++ -outputter/buffer/split ":botright"<CR>
 nnoremap <silent> [quickrun]v :<C-u>QuickRun vim -outputter/buffer/split ":botright"<CR>
 nnoremap <silent> [quickrun]h :<C-u>QuickRun haskell -outputter/buffer/split ":botright"<CR>
 
 nnoremap [make] <Nop>
-nmap <Space>m [make]
+nmap \m [make]
 " nnoremap <silent> [make]m :<C-u>make!<Enter><CR>
-nnoremap <silent> [make]m :<C-u>Unite -no-quit -no-start-insert -direction=botright -no-focus -winheight=8 -log build:!<CR>
+nnoremap <silent> [make]m :<C-u>Unite -no-quit -no-start-insert -direction=botright -no-focus -winheight=8 -log build:!:make:-j6<CR>
 " nnoremap <silent> [make]m :<C-u>QuickRun make -outputter/buffer/split ":botright 8sp"<CR>
 nnoremap <silent> [make]M :<C-u>make! && make run<Enter><CR>
 
@@ -428,27 +466,40 @@ nnoremap <silent> [make]t :<C-u>!ctags -R<Enter><CR>
 nnoremap <silent> [make]d :<C-u>!doxygen<Enter><CR>
 
 nnoremap [window] <Nop>
-nmap <Space>w [window]
+nmap \w [window]
 "ファイラの表示
 nnoremap <silent> [window]e :<C-u>VimFilerExplorer<CR>
 "tagbarの表示
 nnoremap <silent> [window]t :<C-u>TagbarToggle<CR>
 nnoremap <silent> [window]c :<C-u>cclose<CR>
 nnoremap <silent> [window]o :<C-u>copen<CR>
+nnoremap <silent> [window]d :<C-u>Unite codic -winheight=10<CR>
+nnoremap <silent> [window]f :<C-u>Unite -no-split -buffer-name=files -profile-name=buffer -auto-preview file_rec/async:!<cr>
+
+let g:EasyMotion_do_mapping = 0
+nnoremap [easym] <Nop>
+" nmap <Space> [easym]
+nmap <Space> <Plug>(easymotion-s2)
+
+nnoremap [processing] <Nop>
+nmap \p [processing]
+" nnoremap <silent> [processing]m :<C-u>QuickRun processing<CR>
+nnoremap <silent> [processing]m :<C-u>QuickRun processing -outputter/buffer/split ":botright"<CR>
 
 nnoremap [haskell] <Nop>
-nmap <Space>h [haskell]
+nmap \h [haskell]
 nnoremap <silent> [haskell]t :<C-u>GhcModType<CR>
+nnoremap <silent> [haskell]m :<C-u>QuickRun haskell<CR>
 
 nnoremap [ruby] <Nop>
-nmap <Space>r [ruby]
+nmap \r [ruby]
 nnoremap <silent> [ruby]i :<C-u>QuickRun irb<CR>
 nnoremap <silent> [ruby]m :<C-u>QuickRun ruby<CR>
 nnoremap <silent> [ruby]p :<C-u>QuickRun rp5<CR>
 "unite
 "unite prefix key.
 nnoremap [unite] <Nop>
-nmap <Space>u [unite]
+nmap \u [unite]
 
 "unite general settings
 "インサートモードで開始
@@ -523,18 +574,19 @@ let g:lightline = {
 				\ 'active': {
 				\   'left': [
 				\     ['mode', 'paste'],
-				\     ['fugitive', 'gitgutter', 'filename'],
+				\     ['fugitive', 'gitgutter', 'filedir',  'filename'],
 				\   ],
 				\   'right': [
 				\     ['lineinfo', 'syntastic'],
 				\     ['percent'],
-				\     ['charcode', 'fileformat', 'fileencoding', 'filetype'],
+				\     ['fileencoding', 'filetype'],
 				\   ]
 				\ },
 				\ 'component_function': {
 				\   'modified': 'MyModified',
 				\   'readonly': 'MyReadonly',
 				\   'fugitive': 'MyFugitive',
+				\	'filedir':	'MyFileDir',
 				\   'filename': 'MyFilename',
 				\   'fileformat': 'MyFileformat',
 				\   'filetype': 'MyFiletype',
@@ -556,12 +608,17 @@ function! MyReadonly()
 	return &ft !~? 'help\|vimfiler\|gundo' && &ro ? '⭤' : ''
 endfunction
 
+function! MyFileDir()
+	" return expand('%:h')
+	return ''
+endfunction
+
 function! MyFilename()
 	return ('' != MyReadonly() ? MyReadonly() . ' ' : '') .
 				\ (&ft == 'vimfiler' ? vimfiler#get_status_string() :
 				\  &ft == 'unite' ? unite#get_status_string() :
 				\  &ft == 'vimshell' ? substitute(b:vimshell.current_dir,expand('~'),'~','') :
-				\ '' != expand('%:t') ? expand('%:t') : '[No Name]') .
+				\ '' != expand('%:t') ? expand('%:h').'/'.expand('%:t') : '[No Name]') .
 				\ ('' != MyModified() ? ' ' . MyModified() : '')
 endfunction
 
@@ -581,15 +638,16 @@ function! MyFileformat()
 endfunction
 
 function! MyFiletype()
-	return winwidth('.') > 70 ? (strlen(&filetype) ? &filetype : 'no ft') : ''
+	return winwidth('.') > 80 ? (strlen(&filetype) ? &filetype : 'no ft') : ''
 endfunction
 
 function! MyFileencoding()
-	return winwidth('.') > 70 ? (strlen(&fenc) ? &fenc : &enc) : ''
+	return winwidth('.') > 80 ? (strlen(&fenc) ? &fenc : &enc) : ''
 endfunction
 
 function! MyMode()
-	return winwidth('.') > 60 ? lightline#mode() : ''
+	" return winwidth('.') > 60 ? lightline#mode() : ''
+	return lightline#mode()[0]
 endfunction
 
 function! MyGitGutter()
@@ -615,7 +673,7 @@ endfunction
 
 " https://github.com/Lokaltog/vim-powerline/blob/develop/autoload/Powerline/Functions.vim
 function! MyCharCode()
-	if winwidth('.') <= 70
+	if winwidth('.') <= 90
 		return ''
 	endif
 
