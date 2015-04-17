@@ -1,3 +1,4 @@
+export EDITOR=vim
 # PATH の設定（お好みで）
 export PATH="/usr/local/bin:$PATH"
 export PATH="/home/tanitta/local/bin:$PATH"
@@ -19,6 +20,11 @@ export PATH="$HOME/.rbenv/bin:$PATH"
 eval "$(rbenv init - zsh)"
 
 export PATH="$PATH:/usr/local/jruby/bin"
+
+#toolとか
+export PATH=$PATH:~/.tools
+
+export PATH=$PATH:~/.phantomjs/1.9.8/x86_64-linux/bin
 
 # PATH の内容と同期している配列変数 path も使える
 path=(
