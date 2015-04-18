@@ -8,9 +8,11 @@ rbenv_version() {
   rbenv version 2>/dev/null | awk '{print $1}'
 }
 
+local ret_status="%(?:%{$fg_bold[green]%}⮁⮁ :%{$fg_bold[red]%}⮁⮁ %s)"
+
 PROMPT='
 %{$fg_bold[red]%}%n@%m %{$fg_bold[green]%}${PWD/#$HOME/~}%{$reset_color%}$(git_prompt_info) %{$fg_bold[red]%}%*%{$reset_color%}
-$ '
+${ret_status} '
 
 ZSH_THEME_GIT_PROMPT_PREFIX=" on %{$fg[magenta]%}⭠ "
 ZSH_THEME_GIT_PROMPT_SUFFIX="%{$reset_color%}"
