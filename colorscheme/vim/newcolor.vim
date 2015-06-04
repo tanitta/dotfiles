@@ -109,7 +109,7 @@ hi NonText         guifg=#5F5F5F
 hi SpecialKey      guifg=#5F5F5F
 
 hi Normal       guifg=#D0D0D0 guibg=#000000
-hi CursorLine               guibg=#1C1C1C   gui=none
+hi CursorLine               guibg=#262626 gui=none
 hi CursorLineNr guifg=#FF8700               gui=none
 
 highlight Pmenu ctermbg=8 guibg=#303030

@@ -100,7 +100,7 @@ hi Visual                      guibg=#262626
 hi WarningMsg      guifg=#FFFFFF guibg=#444444   gui=bold
 hi WildMenu        guifg=#5FD7FF  guibg=#000000
 
-hi Comment         guifg=#5F5F5F
+hi Comment         guifg=#6c6c6c
 hi CursorColumn                guibg=#303030
 hi ColorColumn                 guibg=#303030
 hi LineNr          guifg=#BCBCBC guibg=#303030
