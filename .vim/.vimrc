@@ -423,67 +423,6 @@ let g:neocomplete#sources#syntax#min_keyword_length = 2
 let g:neocomplete#lock_buffer_name_pattern = '\*ku\*'
 
 
-" neocompleteとclang_completeとの設定
-" if !exists('g:neocomplete#force_omni_input_patterns')
-" 		let g:neocomplete#force_omni_input_patterns = {}
-" endif
-" let g:neocomplete#force_overwrite_completefunc = 1
-" let g:neocomplete#force_omni_input_patterns.c =
-" 						\ '[^.[:digit:] *\t]\%(\.\|->\)\w*'
-" let g:neocomplete#force_omni_input_patterns.cpp =
-" 						\ '[^.[:digit:] *\t]\%(\.\|->\)\%(\h\w*\)\?\|\h\w*::\%(\h\w*\)\?'
-" let g:neocomplete#force_omni_input_patterns.objc =
-" 						\ '\[\h\w*\s\h\?\|\h\w*\%(\.\|->\)'
-" let g:neocomplete#force_omni_input_patterns.objcpp =
-" 						\ '\[\h\w*\s\h\?\|\h\w*\%(\.\|->\)\|\h\w*::\w*'
-"
-" let g:clang_complete_auto = 0
-" let g:clang_auto_select = 0
-" let g:clang_periodic_quickfix = 0
-"
-" let g:clang_use_library = 1
-" let g:clang_complete_copen = 0
-" let g:clang_hl_errors = 0
-" " let g:clang_use_debug = 0
-" let g:clang_library_path  = '/usr/lib/llvm-3.4/lib'
-" " set completeopt=menu,longest
-" let g:clang_snippets = 0
-" let g:clang_snippets_engine = 'clang_complete'
-" let g:clang_user_options = '-std=c++11 -w-'
-
-
-
-" marching
-" オプションを追加する場合
-let g:marching_clang_command_option="-std=c++11 -w"
-
-let g:marching_include_paths = filter(
-			\ split(glob('/usr/include/c++/*'), '\n') +
-			\ split(glob('/usr/include/*/c++/*'), '\n') +
-			\ split(glob('/usr/include/*/'), '\n'),
-			\ 'isdirectory(v:val)')
-
-
-
-" neocomplete.vim と併用して使用する場合
-let g:marching_enable_neocomplete = 1
-
-if !exists('g:neocomplete#force_omni_input_patterns')
-  let g:neocomplete#force_omni_input_patterns = {}
-endif
-
-let g:neocomplete#force_omni_input_patterns.cpp =
-			\ '[^.[:digit:] *\t]\%(\.\|->\)\%(\h\w*\)\?\|\h\w*::\%(\h\w*\)\?'
-
-
-" 処理のタイミングを制御する
-" 環境に合わせて間隔を短くする
-set updatetime=200
-
-" オムニ補完時に補完ワードを挿入したくない場合
-imap <buffer> <C-x><C-o> <Plug>(marching_start_omni_complete)
-
-
 
 " Plugin key-mappings.
 imap <C-k>     <Plug>(neosnippet_expand_or_jump)
@@ -504,26 +443,6 @@ if has('conceal')
 endif
 
 " オレオレキーバインド体系
-nnoremap [quickrun] <Nop>
-nmap \q [quickrun]
-nnoremap <silent> [quickrun]c :<C-u>QuickRun cpp/clang++ -outputter/buffer/split ":botright"<CR>
-nnoremap <silent> [quickrun]v :<C-u>QuickRun vim -outputter/buffer/split ":botright"<CR>
-nnoremap <silent> [quickrun]h :<C-u>QuickRun haskell -outputter/buffer/split ":botright"<CR>
-nnoremap <silent> [quickrun]l :<C-u>QuickRun lua -outputter/buffer/split ":botright"<CR>
-
-nnoremap [make] <Nop>
-nmap \m [make]
-" nnoremap <silent> [make]m :<C-u>make!<Enter><CR>
-nnoremap <silent> [make]m :<C-u>Unite -no-quit -no-start-insert -direction=botright -no-focus -winheight=8 -log build:!:make:-j6<CR>
-" nnoremap <silent> [make]m :<C-u>QuickRun make -outputter/buffer/split ":botright 8sp"<CR>
-nnoremap <silent> [make]M :<C-u>make! && make run<Enter><CR>
-
-" nnoremap <silent> [make]r :<C-u>make run<Enter><CR>
-nnoremap <silent> [make]r :<C-u>Unite -no-quit -no-start-insert -direction=botright -no-focus -winheight=8 -log build:make:run:!<CR>
-" nnoremap <silent> [make]r :<C-u>QuickRun run -outputter/buffer/split ":botright 8sp"<CR>
-
-nnoremap <silent> [make]t :<C-u>!ctags -R<Enter><CR>
-nnoremap <silent> [make]d :<C-u>!doxygen<Enter><CR>
 
 nnoremap [window] <Nop>
 nmap \w [window]
@@ -541,21 +460,14 @@ nnoremap [easym] <Nop>
 " nmap <Space> [easym]
 nmap <Space> <Plug>(easymotion-s2)
 
-nnoremap [processing] <Nop>
-nmap \p [processing]
-" nnoremap <silent> [processing]m :<C-u>QuickRun processing<CR>
-nnoremap <silent> [processing]m :<C-u>QuickRun processing -outputter/buffer/split ":botright"<CR>
+nnoremap [make] <Nop>
+nmap \m [make]
+nnoremap <silent> [make]t :<C-u>!ctags -R<Enter><CR>
+nnoremap <silent> [make]d :<C-u>!doxygen<Enter><CR>
 
-nnoremap [haskell] <Nop>
-nmap \h [haskell]
-nnoremap <silent> [haskell]t :<C-u>GhcModType<CR>
-nnoremap <silent> [haskell]m :<C-u>QuickRun haskell<CR>
+nnoremap [quickrun] <Nop>
+nmap \q [quickrun]
 
-nnoremap [ruby] <Nop>
-nmap \r [ruby]
-nnoremap <silent> [ruby]i :<C-u>QuickRun irb<CR>
-nnoremap <silent> [ruby]m :<C-u>QuickRun ruby<CR>
-nnoremap <silent> [ruby]p :<C-u>QuickRun rp5<CR>
 "unite
 "unite prefix key.
 nnoremap [unite] <Nop>
