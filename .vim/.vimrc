@@ -154,7 +154,7 @@ NeoBundle 'kana/vim-arpeggio'
 NeoBundle 'vim-jp/cpp-vim'
 
 NeoBundle 'thinca/vim-quickrun'
-NeoBundle "jceb/vim-hier"
+" NeoBundle "cohama/vim-hier"
 
 NeoBundle 'szw/vim-tags'
 NeoBundle 'majutsushi/tagbar'
@@ -198,6 +198,11 @@ NeoBundle 'Lokaltog/vim-easymotion'
 
 autocmd BufNewFile,BufRead *.frag,*.vert,*.fp,*.vp,*.glsl
 	\ set filetype=glsl
+
+"syntax check
+NeoBundle "osyo-manga/shabadou.vim"
+NeoBundle "osyo-manga/vim-watchdogs"
+NeoBundle 'KazuakiM/vim-qfstatusline'
 
 call neobundle#end()
 
@@ -272,6 +277,16 @@ let g:quickrun_config = {
 \		"command" : "rp5",
 \		"cmdopt" : "run"
 \	},
+\   "cpp/watchdogs_checker" : {
+\       "type" : "watchdogs_checker/clang++",
+\   },
+\   "watchdogs_checker/clang++" : {
+\		"command" : "make",
+\		"cmdopt" : "CXXFLAGS=-fsyntax-only -j6 ",
+\		"exec" : "%c %o",
+\        'hook/qfstatusline_update/enable_exit':   1,
+\        'hook/qfstatusline_update/priority_exit': 4,
+\   },
 \}
 
 let g:quickrun_config.processing = {
@@ -280,7 +295,25 @@ let g:quickrun_config.processing = {
 \     'command': 'processing-java',
 \     'exec': '%c --sketch=%s:p:h/ --output=/tmp/processing --run --force' }
 
-
+" let s:hook = {
+" \   "name" : "add_include_option",
+" \   "kind" : "hook",
+" \   "config" : {
+" \       "enable" : 0,
+" \   },
+" \}
+" function! s:hook.on_normalized(context, session)
+"     let paths = filter(split(&path, ","), "len(v:val) && v:val !='.'")
+"     if len(paths)
+"         let a:context.config.cmdopt .= " -I".join(paths, " -I")
+"     endif
+" endfunction
+"
+"
+" call quickrun#module#register(s:hook, 1)
+" unlet s:hook
+" 
+" 
 " :QuickRun -outputter my_outputter
 " プロセスの実行中は、buffer に出力し、
 " プロセスが終了したら、quickfix へ出力を行う
@@ -315,6 +348,32 @@ nnoremap <expr><silent> <C-c> quickrun#is_running() ? quickrun#sweep_sessions() 
 " :QuickRun -outputter error -outputter/error/success buffer -outputter/error quickfix
 
 
+" 書き込み後にシンタックスチェックを行う
+let g:watchdogs_check_BufWritePost_enable = 0
+
+" filetype ごとに有効無効を設定することも出来る
+let g:watchdogs_check_BufWritePost_enables = {
+\   "cpp" : 0
+\}
+
+
+" こっちは一定時間キー入力がなかった場合にシンタックスチェックを行う
+" バッファに書き込み後、1度だけ行われる
+let g:watchdogs_check_CursorHold_enable = 0
+
+" filetype=python は無効になる
+" let g:watchdogs_check_CursorHold_enables = {
+" \   "python" : 0
+" \   "ruby"   : 0
+" \}
+ 
+let g:quickrun_config["watchdogs_checker/_"] = {
+      \ "outputter/quickfix/open_cmd" : "",
+      \ }
+
+" この関数で g:quickrun_config にシンタックスチェックを行うための設定を追加する
+" 関数を呼び出すタイミングはユーザの g:quickrun_config 設定後
+call watchdogs#setup(g:quickrun_config)
 
 " Enable snipMate compatibility feature.
 let g:neosnippet#enable_snipmate_compatibility = 1
@@ -350,7 +409,7 @@ Arpeggiovmap jk <Esc>
 
 "ESCでハイライトを消す
 nnoremap <Esc><Esc> :<C-u>set nohlsearch<Return>
-nnoremap <Esc><Esc> :<C-u>GhcModTypeClear<Return>
+" nnoremap <Esc><Esc> :<C-u>GhcModTypeClear<Return>
 
 
 " Disable AutoComplPop.
@@ -450,6 +509,7 @@ nmap \q [quickrun]
 nnoremap <silent> [quickrun]c :<C-u>QuickRun cpp/clang++ -outputter/buffer/split ":botright"<CR>
 nnoremap <silent> [quickrun]v :<C-u>QuickRun vim -outputter/buffer/split ":botright"<CR>
 nnoremap <silent> [quickrun]h :<C-u>QuickRun haskell -outputter/buffer/split ":botright"<CR>
+nnoremap <silent> [quickrun]l :<C-u>QuickRun lua -outputter/buffer/split ":botright"<CR>
 
 nnoremap [make] <Nop>
 nmap \m [make]
@@ -577,7 +637,7 @@ let g:lightline = {
 				\     ['fugitive', 'gitgutter', 'filedir',  'filename'],
 				\   ],
 				\   'right': [
-				\     ['lineinfo', 'syntastic'],
+				\     ['qfstatusline', 'lineinfo', 'syntastic'],
 				\     ['percent'],
 				\     ['fileencoding', 'filetype'],
 				\   ]
@@ -596,10 +656,14 @@ let g:lightline = {
 				\   'charcode': 'MyCharCode',
 				\   'gitgutter': 'MyGitGutter',
 				\ },
+				\    'component_expand': {
+				\        'qfstatusline': 'qfstatusline#Update',},
+				\    'component_type': {
+				\        'qfstatusline': 'error',},
 				\ 'separator': {'left': '⮀', 'right': '⮂'},
 				\ 'subseparator': {'left': '⮁', 'right': '⮃'}
 				\ }
-
+let g:Qfstatusline#UpdateCmd = function('lightline#update')
 function! MyModified()
 	return &ft =~ 'help\|vimfiler\|gundo' ? '' : &modified ? '+' : &modifiable ? '' : '-'
 endfunction
