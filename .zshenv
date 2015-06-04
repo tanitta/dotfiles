@@ -8,7 +8,8 @@ export GOROOT=$HOME/dev/go
 export GOPATH=$GOROOT/packages
 export PATH=$PATH:$GOROOT/bin
 
-export LUA_PATH=~/dev/lua_lib
+# export LUA_PATH=~/dev/lua_lib
+export LUA_PATH=~/dev/cc_lib
 # export PATH=$PATH:~/dev/activator-1.2.10-minimal
 export PATH=$PATH:~/dev/play-2.2.5
 
