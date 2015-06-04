@@ -42,4 +42,6 @@ imap <buffer> <C-x><C-o> <Plug>(marching_start_omni_complete)
 
 
 
-autocmd BufWritePre * :QuickRun cpp/watchdogs_checker
+" autocmd BufWritePre * :QuickRun cpp/watchdogs_checker
+" autocmd BufWritePre * :WatchdogsRun
+" autocmd BufWritePre * :HierUpdate

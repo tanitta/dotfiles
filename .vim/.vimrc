@@ -251,7 +251,10 @@ let g:indentLine_color_term = 111
 let g:indentLine_color_gui = '#708090'
 let g:indentLine_char = '│' "use ¦, ┆ or │
 
+
+
 "quickrun
+"
 let g:quickrun_config = {
 \   "_" : {
 \       "runner" : "vimproc",
@@ -270,7 +273,6 @@ let g:quickrun_config = {
 \		"command" : "make",
 \		"cmdopt" : "run",
 \		"exec" : "%c %o",
-\		"outputter" : "my_outputter",
 \		"runner" : "vimproc",
 \	},
 \	"rp5" : {
@@ -318,28 +320,6 @@ let g:quickrun_config.processing = {
 " プロセスの実行中は、buffer に出力し、
 " プロセスが終了したら、quickfix へ出力を行う
 
-" 既存の outputter をコピーして拡張
-let my_outputter = quickrun#outputter#multi#new()
-let my_outputter.config.targets = ["buffer", "unite_quickfix"]
-" let g:quickrun_unite_quickfix_outputter_args = {-no-quit -no-start-insert -direction=botright -no-focus -winheight=8, "-log"}
-" let g:quickrun_unite_quickfix_outputter_args = ['-start-insert']
-function! my_outputter.init(session)
-    " quickfix を閉じる
-    :cclose
-    " 元の処理を呼び出す
-    call call(quickrun#outputter#multi#new().init, [a:session], self)
-endfunction
-
-function! my_outputter.finish(session)
-    call call(quickrun#outputter#multi#new().finish, [a:session], self)
-    " 出力バッファの削除
-    bwipeout [quickrun
-    " vim-hier を使用している場合は、ハイライトを更新したりとか
-    " :HierUpdate
-endfunction
-
-" quickrun に outputter を登録
-call quickrun#register_outputter("my_outputter", my_outputter)
 
 " <C-c> で実行を強制終了させる
 " quickrun.vim が実行していない場合には <C-c> を呼び出す
@@ -353,7 +333,7 @@ let g:watchdogs_check_BufWritePost_enable = 0
 
 " filetype ごとに有効無効を設定することも出来る
 let g:watchdogs_check_BufWritePost_enables = {
-\   "cpp" : 0
+\   "cpp" : 1
 \}
 
 
@@ -575,7 +555,12 @@ let g:lightline = {
 				\ 'separator': {'left': '⮀', 'right': '⮂'},
 				\ 'subseparator': {'left': '⮁', 'right': '⮃'}
 				\ }
-let g:Qfstatusline#UpdateCmd = function('lightline#update')
+function! UpdateSyntaxCheck()
+	return function('lightline#update')
+endfunction
+
+" let g:Qfstatusline#UpdateCmd = function('lightline#update')
+let g:Qfstatusline#UpdateCmd = UpdateSyntaxCheck()
 function! MyModified()
 	return &ft =~ 'help\|vimfiler\|gundo' ? '' : &modified ? '+' : &modifiable ? '' : '-'
 endfunction
