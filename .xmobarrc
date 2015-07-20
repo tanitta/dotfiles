@@ -1,0 +1,38 @@
+Config { 
+	font = "xft:Inconsolata for Powerline:pixelsize=13:Bold:antialias=true:hinting=true,xft:TakaoPGothic"
+		, bgColor = "#303030"
+		, fgColor = "#BCBCBC"
+        -- , position = Static {  height = 15 }
+        , position = Static { xpos = 1280 , ypos = 0, width = 1920, height = 15 }
+		-- , position = Top
+		, lowerOnStart = False
+		, commands = [ Run Weather "EGPF" ["-t",": C","-L","18","-H","25","--normal","B7CE42","--high","D81860","--low","lightblue"] 36000
+		, Run Network "enp5s0" [
+                  "-L"       , "1000000"
+                , "-H"       , "3000000"
+                , "--normal" , "#B7CE42"
+                , "--high"   , "#D81860"
+        ] 10
+		, Run Cpu [ "-t","Cpu: <total>%","-L","3","-H","70","--normal","#BDE077","--high","red"] 10
+        , Run MultiCpu        [ "-t"       , "<total0>%-<total1>%-<total2>%-<total3>%-<total4>%-<total5>%"
+                              , "-L"       , "3"
+                              , "-H"       , "70"
+                              , "--normal" , "#B7CE42"
+                              , "--high"   , "#D81860"
+          ] 50
+        , Run Memory          [ "-t"       , "Mem: <usedratio>%"
+                              , "-L","3"
+                              , "-H","70"
+                              , "--normal" , "#B7CE42"
+                              , "--high"   , "#D81860"
+          ] 10
+        -- , Run Memory ["-t","Mem: %"] 10
+		, Run Swap [] 10
+		, Run Com "uname" ["-s","-r"] "" 36000
+		, Run Date "%a %b %_d %Y %H:%M:%S" "date" 10
+		, Run StdinReader
+		]
+		, sepChar = "%"
+		, alignSep = "}{"
+		, template = "%StdinReader% }{%cpu%/%multicpu% ⮁⮁ %memory% %swap% ⮁⮁ %enp5s0% ⮁⮁ %date%  ⮁⮁ %uname%"
+} 
