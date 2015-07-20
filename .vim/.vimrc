@@ -70,9 +70,7 @@ let &t_te .= "\e[?1004l"
 map <special> <Esc>[I echo "hoge"
 " augroup vimrc-checktime
 "   autocmd!
-"   " autocmd WinEnter * checktime
-"
-"   autocmd FocusGained * :echo "hoge"
+"   autocmd WinEnter * checktime
 " augroup END
 
 set showcmd " 入力中のコマンドをステータスに表示する
@@ -356,7 +354,8 @@ let g:quickrun_config["watchdogs_checker/_"] = {
 call watchdogs#setup(g:quickrun_config)
 
 " Enable snipMate compatibility feature.
-let g:neosnippet#enable_snipmate_compatibility = 1
+let g:neosnippet#enable_snipmate_compatibility = 0
+" let g:neosnippet#expand_word_boundary = 1
 " Tell Neosnippet about the other snippets
 " let g:neosnippet#snippets_directory='~/dotfiles/.vim/snippets'
 " Tell Neosnippet about the other snippets

@@ -45,3 +45,12 @@ imap <buffer> <C-x><C-o> <Plug>(marching_start_omni_complete)
 " autocmd BufWritePre * :QuickRun cpp/watchdogs_checker
 " autocmd BufWritePre * :WatchdogsRun
 " autocmd BufWritePre * :HierUpdate
+ 
+augroup cpp-auto;
+    autocmd!
+   " 末尾が " ' ) の場合に ; を追加する
+    autocmd InsertLeave *
+\   if &filetype == "cpp" && getline(".") =~ '["'')]$'
+\|      call setline(".", getline(".") . ";")
+\|  end
+augroup END

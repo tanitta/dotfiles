@@ -14,7 +14,38 @@ abbr        class {}
 			$1(){};
 			virtual ~$1(){};
 	};
+    
+snippet     cout 
+abbr        std::cout ... std::endl
+    std::cout<<${1}<<std::endl;
+    
+snippet     defsptr
+abbr        define shared_ptr
+    std::shared_ptr<${1:#:type}> ${2:#:name}(new $1);${0}
 
+snippet     defuptr
+abbr        define unique_ptr
+    std::unique_ptr<${1:#:type}> ${2:#:name}(new $1);${0}
+    
+snippet     defwptr
+abbr        define weak_ptr
+    std::weak_ptr<${1:#:type}> ${2:#:name}(new $1);${0}
+    
+snippet     tsptr
+abbr        define shared_ptr
+options word   
+    std::shared_ptr<${1:#:type}>${0}
+
+snippet     tuptr
+abbr        define unique_ptr
+options word   
+    std::unique_ptr<${1:#:type}>${0}
+    
+snippet     twptr
+abbr        define weak_ptr
+options word   
+    std::weak_ptr<${1:#:type}>${0}
+    
 snippet     doxy
 abbr        doxy_comment //!.. /*!..*/
 	//! ${1:abstract}
