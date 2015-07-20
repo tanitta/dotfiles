@@ -20,6 +20,8 @@ export PATH=$PATH:~/.cabal/bin
 export PATH="$HOME/.rbenv/bin:$PATH"
 eval "$(rbenv init - zsh)"
 
+export PATH="$HOME/.gem/ruby/2.2.0/bin:$PATH"
+
 export PATH="$PATH:/usr/local/jruby/bin"
 
 #toolとか
