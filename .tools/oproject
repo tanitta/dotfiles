@@ -1,0 +1,19 @@
+#!/bin/sh
+while getopts t:c: opt
+do
+	case ${opt} in
+		t)
+			TIMES=${OPTARG};;
+		c)
+			DIR=${OPTARG};;
+		\?)
+			exit 1;;
+	esac
+done
+echo "TIMES=${TIMES}"
+echo "DIR=${DIR}"
+
+for i in `seq 1 ${TIMES}`
+do
+	urxvt &
+done

@@ -1,0 +1,50 @@
+#!/home/tanitta/.rbenv/shims/ruby
+$depth = 0
+def search(dir)
+	strings = []
+	Dir::glob(dir + '/*.{h,hpp}').each{|f|
+		puts "\t"*$depth + f
+		strings.push(f)
+	}
+	if strings.size > 0
+		f = open(dir + "/clang_header_list", "w")
+		strings.each{|str|
+			f.write(str+"\n")
+		}
+		f.close
+		currend_dir = Dir::pwd
+		Dir::chdir(dir)
+		result = system("modularize -module-map-path=module.modulemap clang_header_list")
+		puts result
+		Dir::chdir(currend_dir)
+		# begin
+			# exec("modularize -module-map-path=#{dir}/module.modulemap #{dir}/clang_header_list")
+		# rescue
+			# puts "error"
+		# end
+	end
+
+	Dir::foreach(dir) {|f|
+		$depth = $depth+1
+		if f != "." && f != ".."
+			search_string = dir + "/" + f
+			if File::ftype(search_string)=="directory"
+				puts "\t"*$depth + search_string
+				search(search_string)
+			end
+		end
+		$depth = $depth-1
+	}
+end
+target_dir = "/home/tanitta/dev/of_v0.8.4_dummy/examples"
+# target_dir = "/home/tanitta/dev/compile_test"
+# target_dir = "/home/tanitta/dev/openFrameworks/libs"
+# target_dir = "/home/tanitta/dev/openFrameworks/libs"
+# Dir::chdir(target_dir)
+# Dir::glob(target_dir + "/" + '/**/*.{h,hpp}').each{|f|
+# # Dir::glob('./**/*.{h,hpp}').each{|f|
+# 	# puts File::dirname(f)
+# 	puts f
+# }
+
+search(target_dir)
