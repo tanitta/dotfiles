@@ -19,7 +19,7 @@ colorNormalbg  = "#303030"
 colorHeadbg  = "#444444"
 main = do
     myStatusBar <- spawnPipe "xmobar"
-    xmonad defaultConfig {
+    xmonad $ ewmh defaultConfig {
           modMask         = myModMask
         , terminal = myTerminal
         , layoutHook      = myLayoutHook
@@ -28,8 +28,8 @@ main = do
         , normalBorderColor  = "#000000"
         , focusedBorderColor = "#888888"
         , startupHook = ewmhDesktopsStartup >> setWMName "LG3D"
+        , handleEventHook = handleEventHook defaultConfig <+> fullscreenEventHook 
         }
-
 myModMask = mod4Mask
 
 myLayoutHook = avoidStruts $ layoutHook defaultConfig
