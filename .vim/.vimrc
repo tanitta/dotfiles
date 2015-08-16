@@ -159,13 +159,22 @@ NeoBundle 'majutsushi/tagbar'
 
 NeoBundle 'derekwyatt/vim-scala'
 
+" NeoBundle 'terryma/vim-multiple-cursors'
+NeoBundle 'osyo-manga/vim-over'
+NeoBundle 'osyo-manga/vim-snowdrop'
+" 
+
 " Processing
-NeoBundle "sophacles/vim-processing"
-augroup Processing
-    autocmd!
-    autocmd BufNewFile *.pde NeoBundleSource vim-processing
-    autocmd BufRead    *.pde NeoBundleSource vim-processing
-augroup END
+" NeoBundleLazy 'sophacles/vim-processing' , {'autoload' : {'filename_patterns' : '.*\.pde'}}
+NeoBundle 'sophacles/vim-processing'
+" augroup Processing
+"     autocmd!
+"     autocmd BufNewFile *.pde NeoBundleSource vim-processing
+"     autocmd BufRead    *.pde NeoBundleSource vim-processing
+" augroup END
+" NeoBundleLazy 'sophacles/vim-processing' , {'autoload' : {'filename_patterns' : '.*\.pde'}}
+au BufNewFile,BufRead *.pde setf processing
+
 NeoBundle 'mattn/emmet-vim'
 NeoBundle 'tpope/vim-surround'
 " NeoBundle 'open-browser.vim'
@@ -178,6 +187,8 @@ NeoBundle 'hail2u/vim-css3-syntax'
 " 
 NeoBundle 'koron/codic-vim'
 NeoBundle 'rhysd/unite-codic.vim'
+NeoBundle 'mmisono/ref-dicts-en'
+NeoBundle 'thinca/vim-ref'
 
 "Haskell
 NeoBundle 'kana/vim-filetype-haskell' "スマートインデント
@@ -431,7 +442,6 @@ nnoremap <silent> [window]e :<C-u>VimFilerExplorer<CR>
 nnoremap <silent> [window]t :<C-u>TagbarToggle<CR>
 nnoremap <silent> [window]c :<C-u>cclose<CR>
 nnoremap <silent> [window]o :<C-u>copen<CR>
-nnoremap <silent> [window]d :<C-u>Unite codic -winheight=10<CR>
 nnoremap <silent> [window]f :<C-u>Unite -no-split -buffer-name=files -profile-name=buffer -auto-preview file_rec/async:!<cr>
 
 let g:EasyMotion_do_mapping = 0
@@ -446,6 +456,37 @@ nnoremap <silent> [make]d :<C-u>!doxygen<Enter><CR>
 
 nnoremap [quickrun] <Nop>
 nmap \q [quickrun]
+
+nnoremap [dictionary] <Nop>
+nmap \d [dictionary]
+nnoremap <silent> [dictionary]c :<C-u>Unite codic -winheight=10<CR>
+"webdictサイトの設定
+let g:ref_source_webdict_sites = {
+\   'je': {
+\     'url': 'http://dictionary.infoseek.ne.jp/jeword/%s',
+\   },
+\   'ej': {
+\     'url': 'http://dictionary.infoseek.ne.jp/ejword/%s',
+\   },
+\   'wiki': {
+\     'url': 'http://ja.wikipedia.org/wiki/%s',
+\   },
+\ }
+
+"デフォルトサイト
+let g:ref_source_webdict_sites.default = 'ej'
+
+"出力に対するフィルタ。最初の数行を削除
+function! g:ref_source_webdict_sites.je.filter(output)
+  return join(split(a:output, "\n")[15 :], "\n")
+endfunction
+function! g:ref_source_webdict_sites.ej.filter(output)
+  return join(split(a:output, "\n")[15 :], "\n")
+endfunction
+function! g:ref_source_webdict_sites.wiki.filter(output)
+  return join(split(a:output, "\n")[17 :], "\n")
+endfunction
+nnoremap <silent> [dictionary]d :<C-u>Unite ref/webdict<CR>
 
 "unite
 "unite prefix key.

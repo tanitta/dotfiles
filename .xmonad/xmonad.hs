@@ -28,7 +28,7 @@ main = do
         , normalBorderColor  = "#000000"
         , focusedBorderColor = "#888888"
         , startupHook = ewmhDesktopsStartup >> setWMName "LG3D"
-        , handleEventHook = handleEventHook defaultConfig <+> fullscreenEventHook 
+        -- , handleEventHook = handleEventHook defaultConfig <+> fullscreenEventHook 
         }
 myModMask = mod4Mask
 
