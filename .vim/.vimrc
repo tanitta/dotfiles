@@ -123,11 +123,21 @@ call neobundle#begin(expand('~/.vim/bundle/'))
 
 "neobundle自体をneobundleで管理
 NeoBundleFetch 'shougo/neobundle.vim'
+
 NeoBundle "Shougo/vimproc.vim"
 NeoBundle "tyru/caw.vim"
 NeoBundle 'itchyny/lightline.vim'
+
+
+NeoBundle 'vim-scripts/ViewOutput'
+
+NeoBundle 'cohama/lexima.vim'
+
+" git
 NeoBundle 'tpope/vim-fugitive'
 NeoBundle 'airblade/vim-gitgutter'
+NeoBundle 'cohama/agit.vim'
+
 NeoBundle 'Shougo/unite.vim'
 NeoBundle 'Shougo/vimfiler.vim'
 NeoBundle 'Shougo/unite-build'
@@ -148,6 +158,8 @@ NeoBundle 'osyo-manga/vim-marching'
 NeoBundle 'Shougo/neosnippet'
 NeoBundle 'Shougo/neosnippet-snippets'
 
+NeoBundle 'ujihisa/neco-look'
+
 NeoBundle 'kana/vim-arpeggio'
 NeoBundle 'vim-jp/cpp-vim'
 
@@ -162,7 +174,9 @@ NeoBundle 'derekwyatt/vim-scala'
 " NeoBundle 'terryma/vim-multiple-cursors'
 NeoBundle 'osyo-manga/vim-over'
 NeoBundle 'osyo-manga/vim-snowdrop'
-" 
+
+
+NeoBundle 'sbl/scvim'
 
 " Processing
 " NeoBundleLazy 'sophacles/vim-processing' , {'autoload' : {'filename_patterns' : '.*\.pde'}}
@@ -189,6 +203,9 @@ NeoBundle 'koron/codic-vim'
 NeoBundle 'rhysd/unite-codic.vim'
 NeoBundle 'mmisono/ref-dicts-en'
 NeoBundle 'thinca/vim-ref'
+
+"D"
+NeoBundle 'idanarye/vim-dutyl'
 
 "Haskell
 NeoBundle 'kana/vim-filetype-haskell' "スマートインデント
@@ -275,14 +292,29 @@ let g:quickrun_config = {
 \   },
 \	"make" : {
 \		"command" : "make",
+\		"cmdopt" : "Debug -j6",
 \		"exec" : "%c %o",
 \		"runner" : "vimproc",
 \	},
 \	"run" : {
 \		"command" : "make",
-\		"cmdopt" : "run",
+\		"cmdopt" : "RunDebug -j6",
 \		"exec" : "%c %o",
 \		"runner" : "vimproc",
+\	},
+\	"d/dmd" : {
+\		"command" : "dmd",
+\		"cmdopt" : "-run", 
+\		'tempfile': "d.d"
+\	},
+\	'd/rdmd': {
+\		'command': 'rdmd',
+\		'tempfile': 'd.d'
+\	},
+\	'd/rdmd_unittest': {
+\		'command': 'rdmd',
+\		"cmdopt" : "-unittest", 
+\		'tempfile': 'd.d'
 \	},
 \	"rp5" : {
 \		"command" : "rp5",
@@ -293,7 +325,7 @@ let g:quickrun_config = {
 \   },
 \   "watchdogs_checker/clang++" : {
 \		"command" : "make",
-\		"cmdopt" : "CXXFLAGS=-fsyntax-only -j6 ",
+\		"cmdopt" : "CXXFLAGS=-fsyntax-only -j4 ",
 \		"exec" : "%c %o",
 \        'hook/qfstatusline_update/enable_exit':   1,
 \        'hook/qfstatusline_update/priority_exit': 4,
@@ -342,7 +374,7 @@ let g:watchdogs_check_BufWritePost_enable = 0
 
 " filetype ごとに有効無効を設定することも出来る
 let g:watchdogs_check_BufWritePost_enables = {
-\   "cpp" : 1
+\   "cpp" : 0
 \}
 
 
@@ -413,6 +445,21 @@ let g:neocomplete#sources#syntax#min_keyword_length = 2
 let g:neocomplete#lock_buffer_name_pattern = '\*ku\*'
 
 
+if !exists('g:neocomplete#text_mode_filetypes')
+    let g:neocomplete#text_mode_filetypes = {}
+endif
+let g:neocomplete#text_mode_filetypes = {
+            \ 'rst': 1,
+            \ 'markdown': 1,
+            \ 'gitrebase': 1,
+            \ 'gitcommit': 1,
+            \ 'vcs-commit': 1,
+            \ 'hybrid': 1,
+            \ 'text': 1,
+            \ 'help': 1,
+            \ 'tex': 1,
+            \ }
+
 
 " Plugin key-mappings.
 imap <C-k>     <Plug>(neosnippet_expand_or_jump)
@@ -431,6 +478,28 @@ smap <expr><TAB> neosnippet#expandable_or_jumpable() ?
 if has('conceal')
   set conceallevel=2 concealcursor=i
 endif
+
+
+" ,の後にスペースを入れる
+call lexima#add_rule({
+\ "at" : '\%#',
+\ "char" : ",",
+\ "input" : ",<Space>",
+\})
+" ", " の後にスペースを続けれないようにする
+" 誤爆防止用
+call lexima#add_rule({
+\   "at" : ', \%#',
+\   "char" : '<Space>',
+\   "input" : "",
+\})
+" ", "の後に改行したら末尾のスペースを消す
+call lexima#add_rule({
+\   "at" : ', \%#',
+\   "char" : '<Enter>',
+\   "input" : '<BS><Enter>',
+\})
+
 
 " オレオレキーバインド体系
 
@@ -452,7 +521,7 @@ nmap <Space> <Plug>(easymotion-s2)
 nnoremap [make] <Nop>
 nmap \m [make]
 nnoremap <silent> [make]t :<C-u>!ctags -R<Enter><CR>
-nnoremap <silent> [make]d :<C-u>!doxygen<Enter><CR>
+" nnoremap <silent> [make]d :<C-u>!doxygen<Enter><CR>
 
 nnoremap [quickrun] <Nop>
 nmap \q [quickrun]
@@ -487,6 +556,13 @@ function! g:ref_source_webdict_sites.wiki.filter(output)
   return join(split(a:output, "\n")[17 :], "\n")
 endfunction
 nnoremap <silent> [dictionary]d :<C-u>Unite ref/webdict<CR>
+
+nnoremap [git] <Nop>
+nmap \g [git]
+nnoremap <silent> [git]a :<C-u>Agit<CR>
+nnoremap <silent> [git]s :<C-u>Gstatus<CR>
+nnoremap <silent> [git]c :<C-u>Gcommit<CR>
+nnoremap <silent> [git]p :<C-u>Git push<CR>
 
 "unite
 "unite prefix key.
@@ -541,6 +617,29 @@ function! s:unite_my_settings()"{{{
 	nnoremap <silent> <buffer> <expr> <C-o> unite#do_action('open')
 	inoremap <silent> <buffer> <expr> <C-o> unite#do_action('open')
 endfunction"}}}
+
+" insert modeで開始
+let g:unite_enable_start_insert = 1
+
+" 大文字小文字を区別しない
+let g:unite_enable_ignore_case = 1
+let g:unite_enable_smart_case = 1
+
+" grep検索
+nnoremap <silent> [unite]g :<C-u>Unite grep:. -buffer-name=search-buffer<CR>
+
+" カーソル位置の単語をgrep検索
+nnoremap <silent> [unite]gc :<C-u>Unite grep:. -buffer-name=search-buffer<CR><C-R><C-W>
+
+" grep検索結果の再呼出
+nnoremap <silent> [unite]gr :<C-u>UniteResume search-buffer<CR>
+
+" unite grep に ag(The Silver Searcher) を使う
+if executable('ag')
+  let g:unite_source_grep_command = 'ag'
+  let g:unite_source_grep_default_opts = '--nogroup --nocolor --column'
+  let g:unite_source_grep_recursive_opt = ''
+endif
 
 
 "vimfiler
@@ -707,3 +806,99 @@ function! MyCharCode()
 
 	return "'". char ."' ". nr
 endfunction
+
+
+" function! s:GetScreenFullNames()
+" 	let raw_str= system("screen -ls")
+" 	let raw_str_list = split(raw_str,"\n")
+" 	let i = 0
+" 	if len(raw_str_list) !=1
+" 			call remove(raw_str_list,len(raw_str_list)-1)
+" 			call remove(raw_str_list,0)
+" 	endif
+" 	let screen_names = []
+" 	for index in raw_str_list
+" 		let screen_name= matchstr(index,'\t\zs.*\ze\t',0)
+" 		call add(screen_names,screen_name)
+" 	endfor
+" 	return screen_names
+" endfunction
+"
+" function! s:GetScreenLastNames()
+" 	let full_names = s:GetScreenFullNames()
+" 	let screen_names = []
+" 	for index in full_names
+" 		let screen_name = matchstr(index,'\.\zs.*',0)
+" 		call add(screen_names,screen_name)
+" 	endfor
+" 	return screen_names
+" endfunction
+"
+" function! s:ExistsLastName(name)
+" 	let last_names = s:GetScreenLastNames()
+" 	for index in last_names
+" 		if index == a:name
+" 			return 1
+" 		else
+" 			return 0
+" 		endif
+" 	endfor
+" endfunction
+" echo s:ExistsLastName("vim")
+
+let g:vim_to_screen_names = []
+function! s:ScreenStart(name)
+	for index in g:vim_to_screen_names
+		if index == a:name
+			return
+		endif
+	endfor
+	let command = "screen -S " . a:name
+	let result = system("urxvt". ' -e ' . command . ' &')	
+	call add( g:vim_to_screen_names, a:name)
+	return result
+endfunction
+command! -nargs=0 ScreenStart call s:ScreenStart("vim")
+
+function! s:ScreenQuit(screen_name)
+	for index in g:vim_to_screen_names
+		if index == a:screen_name
+			let result = system("screen". ' -S ' . a:screen_name. ' -X quit')
+		endif
+	endfor
+endfunction
+command! -nargs=0 ScreenQuit call s:ScreenQuit("vim")
+
+function! s:ScreenQuitAll()
+	for index in g:vim_to_screen_names
+		let result = system("screen". ' -S ' . index. ' -X quit')
+	endfor
+endfunction
+
+augroup vim_to_screen
+	autocmd!
+	autocmd VimLeave * call s:ScreenQuitAll()
+augroup END
+
+function! s:ScreenSend(screen_name, command)
+	for index in g:vim_to_screen_names
+		if index == a:screen_name
+			let result = system("screen -S ".a:screen_name. " -X ". "stuff '". a:command . '^M'. "'")
+		endif
+	endfor
+endfunction
+command! -nargs=1 ScreenSend call s:ScreenSend("vim",<f-args>)
+
+" function! s:ScreenSendEasily(screen_name, command)
+" 	for index in g:vim_to_screen_names
+" 		if index == a:screen_name
+" 			return
+" 		endif
+" 	endfor
+" 	let command = "screen -S " . a:screen_name
+" 	let screen_cmd = "screen -S ".a:screen_name. " -X ". "stuff '". a:command . '^M'. "'"
+" 	let result = system("urxvt". ' -e ' . command . ' &&'. screen_cmd)
+" 	echo result
+" 	call add( g:vim_to_screen_names, a:screen_name)
+" endfunction
+" command! -nargs=1 ScreenSendEasily call s:ScreenSendEasily("vim",<f-args>)

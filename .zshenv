@@ -1,4 +1,5 @@
 export EDITOR=vim
+
 # PATH の設定（お好みで）
 export PATH="/usr/local/bin:$PATH"
 export PATH="/home/tanitta/local/bin:$PATH"

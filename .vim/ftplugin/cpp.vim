@@ -1,26 +1,39 @@
-" nnoremap <silent> [make]m :<C-u>make!<Enter><CR>
-nnoremap <silent> [make]m :<C-u>Unite -no-quit -no-start-insert -direction=botright -no-focus -winheight=8 -log build:!:make:-j6<CR>
+" make
+nnoremap <silent> [make]m :<C-u>ScreenSend make Debug -j6<Enter><CR>
+" nnoremap <silent> [make]m :<C-u>make Debug -j6<Enter><CR>
+" nnoremap <silent> [make]m :<C-u>Unite -no-quit -no-start-insert -direction=botright -no-focus -winheight=8 -log build:!:make:Debug:-j6<CR>
 " nnoremap <silent> [make]m :<C-u>QuickRun make -outputter/buffer/split ":botright 8sp"<CR>
-nnoremap <silent> [make]M :<C-u>make! && make run<Enter><CR>
-
-" nnoremap <silent> [make]r :<C-u>make run<Enter><CR>
-nnoremap <silent> [make]r :<C-u>Unite -no-quit -no-start-insert -direction=botright -no-focus -winheight=8 -log build:make:run:!<CR>
-" nnoremap <silent> [make]r :<C-u>QuickRun run -outputter/buffer/split ":botright 8sp"<CR>
 " 
+" run
+nnoremap <silent> [make]r :<C-u>ScreenSend make RunDebug<Enter><CR>
+" nnoremap <silent> [make]r :<C-u>make RunDebug<Enter><CR>
+" nnoremap <silent> [make]r :<C-u>make run<Enter><CR>
+" nnoremap <silent> [make]r :<C-u>Unite -no-quit -no-start-insert -direction=botright -no-focus -winheight=8 -log build:make:RunDebug:!<CR>
+" nnoremap <silent> [make]r :<C-u>QuickRun run -outputter/buffer/split ":botright 8sp"<CR>
+
+" doxygen
+nnoremap <silent> [make]d :<C-u>ScreenSend make doxy<Enter><CR>
+ 
 nnoremap <silent> [quickrun]q :<C-u>QuickRun cpp/clang++ -outputter/buffer/split ":botright"<CR>
 
 
+nnoremap [snowdrop] <Nop>
+nmap \s [snowdrop]
+nnoremap <silent> [snowdrop]s :<C-u>OverCommandLine<CR>
+nnoremap <silent> [snowdrop]t :<C-u>SnowdropEchoTypeof<CR>
+nnoremap <silent> [snowdrop]g :<C-u>SnowdropGotoDefinition<CR>
 " marching
 " オプションを追加する場合
-let g:marching_clang_command_option="-std=c++11 -w"
-
-let g:marching_include_paths = filter(
-			\ split(glob('/usr/include/c++/*'), '\n') +
-			\ split(glob('/usr/include/*/c++/*'), '\n') +
-			\ split(glob('/usr/include/*/'), '\n'),
-			\ 'isdirectory(v:val)')
+" let g:marching_clang_command_option="-std=c++11 -w"
+" let g:marching_clang_command_option="-std=c++11 -w"
 
 
+" let g:marching_include_paths += filter(
+"  			\ split(glob('/usr/include/'), '\n') +
+"  			\ split(glob('/usr/include/*'), '\n') +
+"  			\ split(glob('/usr/include/*/*'), '\n') +
+"  			\ split(glob('/usr/include/*/*/*'), '\n') ,
+" 			\ 'isdirectory(v:val)')
 
 " neocomplete.vim と併用して使用する場合
 let g:marching_enable_neocomplete = 1
@@ -54,3 +67,8 @@ augroup cpp-auto;
 \|      call setline(".", getline(".") . ";")
 \|  end
 augroup END
+
+let g:snowdrop#libclang_directory = "/usr/local/lib/"
+
+"screen
+"
