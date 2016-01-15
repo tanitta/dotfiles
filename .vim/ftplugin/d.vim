@@ -2,8 +2,9 @@ nnoremap <silent> [quickrun]q :<C-u>QuickRun d/rdmd -outputter/buffer/split ":bo
 nnoremap <silent> [quickrun]t :<C-u>QuickRun d/rdmd_unittest  -outputter/buffer/split ":botright"<CR>
 
 nnoremap <silent> [make]m :<C-u>ScreenSend dub run --compiler=ldc2<Enter><CR>
-nnoremap <silent> [make]t :<C-u>ScreenSend dub test<Enter><CR>
-nnoremap <silent> [make]d :<C-u>ScreenSend dub run --build=debug-profile<Enter><CR>
+nnoremap <silent> [make]t :<C-u>ScreenSend dub test && mpg123 -q ~/Music/game01/crrect_answer3.mp3 \|\| mpg123 -q ~/Music/game01/blip01.mp3<Enter><CR>
+nnoremap <silent> [make]p :<C-u>ScreenSend dub run --build=debug-profile<Enter><CR>
+nnoremap <silent> [make]d :<C-u>ScreenSend dub run --build=docs<Enter><CR>
 
 nnoremap [snowdrop] <Nop>
 nmap \s [snowdrop]
@@ -11,11 +12,6 @@ nnoremap <silent> [snowdrop]s :<C-u>OverCommandLine<CR>
 nnoremap <silent> [snowdrop]g :<C-u>DUjump<CR>
 nnoremap <silent> [snowdrop]t :<C-u>DUvjump<CR>
 
-" augroup dudcd_start_server
-"   autocmd!
-"   " autocmd VimEnter *.d DUDCDstartServer
-"   autocmd BufAdd *.d echo "ﾋﾞﾑｩ"
-" augroup END
 DUDCDstartServer
 
 " augroup d-auto;
@@ -35,4 +31,5 @@ if !exists("g:neocomplete#force_omni_input_patterns")
     let g:neocomplete#force_omni_input_patterns = {}
 endif
 autocmd FileType d setlocal omnifunc=dutyl#dComplete
-let g:neocomplete#force_omni_input_patterns.d = '[^.[:digit:] *\t]\%(\.\|->\)\|::'
+let g:neocomplete#force_omni_input_patterns.d = '[^.[:digit:] *\t]\%(\.\|->\)\%(\h\w*\)\?\|\h\w*::\%(\h\w*\)\?'
+" '[^.[:digit:] *\t]\%(\.\|->\)\|::'

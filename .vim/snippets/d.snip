@@ -15,5 +15,24 @@ abbr        main
     
 snippet     writeln
 abbr        writeln
-    writeln(${0});
+    writeln(${0})${1};
     
+
+snippet     class
+abbr        class {}
+    /++
+    ++/
+	class ${1:#:name} {
+		public{
+        }//public
+        
+        private{
+        }//private
+	}//class $1
+
+snippet     comment
+abbr        comment
+options     head
+    /++
+        ${0}
+    ++/${1}
