@@ -1,4 +1,3 @@
-
 set t_Co=256
 set laststatus=2
 set noswapfile
@@ -127,7 +126,7 @@ NeoBundleFetch 'shougo/neobundle.vim'
 NeoBundle "Shougo/vimproc.vim"
 NeoBundle "tyru/caw.vim"
 NeoBundle 'itchyny/lightline.vim'
-
+NeoBundle 'itchyny/thumbnail.vim'
 
 NeoBundle 'vim-scripts/ViewOutput'
 
@@ -512,6 +511,8 @@ nnoremap <silent> [window]t :<C-u>TagbarToggle<CR>
 nnoremap <silent> [window]c :<C-u>cclose<CR>
 nnoremap <silent> [window]o :<C-u>copen<CR>
 nnoremap <silent> [window]f :<C-u>Unite -no-split -buffer-name=files -profile-name=buffer -auto-preview file_rec/async:!<cr>
+nnoremap <silent> [window]b :<C-u>Thumbnail here<CR>
+nnoremap <silent> [window]B :<C-u>Thumbnail<CR>
 
 let g:EasyMotion_do_mapping = 0
 nnoremap [easym] <Nop>
