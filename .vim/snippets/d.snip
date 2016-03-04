@@ -21,7 +21,7 @@ abbr        writeln
 snippet     class
 abbr        class {}
     /++
-    ++/
+    +/
 	class ${1:#:name} {
 		public{
         }//public
@@ -29,10 +29,57 @@ abbr        class {}
         private{
         }//private
 	}//class $1
+   
+snippet     struct 
+abbr        struct {}
+    /++
+    +/
+	struct ${1:#:name} {
+		public{
+        }//public
+        
+        private{
+        }//private
+	}//struct $1
+
+snippet     interface 
+abbr        interface {}
+    /++
+    +/
+	interface ${1:#:name} {
+		public{
+        }//public
+        
+        private{
+        }//private
+	}//interface $1
+
+snippet    template 
+abbr        template {}
+    /++
+    +/
+	template ${1:#:name}(${2:#:T}) {
+		public{
+        }//public
+        
+        private{
+        }//private
+	}//template $1
+
 
 snippet     comment
 abbr        comment
 options     head
     /++
         ${0}
-    ++/${1}
+    +/${1}
+    
+
+snippet    typecheck 
+abbr       typecheck 
+options     head
+    if(
+        __traits(compiles, (){
+            ${0}
+        })
+    )
