@@ -128,14 +128,23 @@ NeoBundle "tyru/caw.vim"
 NeoBundle 'itchyny/lightline.vim'
 NeoBundle 'itchyny/thumbnail.vim'
 
+NeoBundle 'yuratomo/w3m.vim'
+
 NeoBundle 'vim-scripts/ViewOutput'
 
 NeoBundle 'cohama/lexima.vim'
+
+" text object
+NeoBundle 'tpope/vim-surround'
+NeoBundle 'kana/vim-textobj-user'
+NeoBundle 'sgur/vim-textobj-parameter'
 
 " git
 NeoBundle 'tpope/vim-fugitive'
 NeoBundle 'airblade/vim-gitgutter'
 NeoBundle 'cohama/agit.vim'
+
+NeoBundle "ctrlpvim/ctrlp.vim"
 
 NeoBundle 'Shougo/unite.vim'
 NeoBundle 'Shougo/vimfiler.vim'
@@ -147,7 +156,6 @@ NeoBundle 'Yggdroot/indentLine'
 
 NeoBundle "osyo-manga/vim-brightest"
 
-NeoBundle 'tpope/vim-surround'
 
 NeoBundle 'Shougo/neocomplete.git'
 " NeoBundle 'Rip-Rip/clang_complete'
@@ -211,6 +219,10 @@ NeoBundle 'kana/vim-filetype-haskell' "スマートインデント
 NeoBundle 'eagletmt/ghcmod-vim' "型の表示用 sudo apt-get install apt-get ghc-mod すること
 let $PATH = $PATH . ':' . expand('~/.cabal/bin')
 NeoBundle 'ujihisa/neco-ghc' "補完
+
+"OCaml
+" NeoBundle 'scrooloose/syntastic'
+NeoBundle 'def-lkb/ocp-indent-vim'
 
 NeoBundle 'Lokaltog/powerline-fontpatcher'
 
