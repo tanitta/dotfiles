@@ -83,3 +83,6 @@ alias v="vim"
 alias sv="sudo vim"
 alias electron="/usr/lib/node_modules/electron-prebuilt/dist/electron"
 source ~/.zshenv
+
+# OPAM configuration
+. /home/tanitta/.opam/opam-init/init.zsh > /dev/null 2> /dev/null || true
