@@ -441,7 +441,7 @@ Arpeggiovmap jk <Esc>
 "smap <C-k> <Plug>(neosnippet_expand_or_jump)
 
 "ESCでハイライトを消す
-nnoremap <Esc><Esc> :<C-u>set nohlsearch<Return>
+" nnoremap <Esc><Esc> :<C-u>set nohlsearch<Return>
 " nnoremap <Esc><Esc> :<C-u>GhcModTypeClear<Return>
 
 
