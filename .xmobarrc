@@ -34,5 +34,5 @@ Config {
 		]
 		, sepChar = "%"
 		, alignSep = "}{"
-		, template = "%StdinReader% }{%cpu%/%multicpu% ⮁⮁ %memory% %swap% ⮁⮁ %enp5s0% ⮁⮁ %date%  ⮁⮁ %uname%"
+		, template = "%StdinReader% }{%cpu%/%multicpu% ⮃⮃ %memory% %swap% ⮃⮃ %enp5s0% ⮃⮃ %date%  ⮃⮃ %uname%"
 } 
