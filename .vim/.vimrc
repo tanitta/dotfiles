@@ -132,12 +132,16 @@ NeoBundle 'yuratomo/w3m.vim'
 
 NeoBundle 'vim-scripts/ViewOutput'
 
+
 NeoBundle 'cohama/lexima.vim'
 
 " text object
 NeoBundle 'tpope/vim-surround'
 NeoBundle 'kana/vim-textobj-user'
 NeoBundle 'sgur/vim-textobj-parameter'
+
+" working logger
+NeoBundle 'wakatime/vim-wakatime'
 
 " git
 NeoBundle 'tpope/vim-fugitive'
@@ -212,6 +216,7 @@ NeoBundle 'mmisono/ref-dicts-en'
 NeoBundle 'thinca/vim-ref'
 
 "D"
+NeoBundle 'JesseKPhillips/d.vim'
 NeoBundle 'idanarye/vim-dutyl'
 
 "Haskell
