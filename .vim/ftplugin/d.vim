@@ -6,7 +6,7 @@ nnoremap <silent> [make]M :<C-u>ScreenSend dub run --compiler=ldc2 --build=optim
 nnoremap <silent> [make]t :<C-u>ScreenSend dub test<Enter><CR>
 nnoremap <silent> [make]s :<C-u>ScreenSend dub run --build=spec<Enter><CR>
 " nnoremap <silent> [make]t :<C-u>ScreenSend dub test && mpg123 -q ~/Music/game01/crrect_answer3.mp3 \|\| mpg123 -q ~/Music/game01/blip01.mp3<Enter><CR>
-nnoremap <silent> [make]p :<C-u>ScreenSend dub run --compiler=ldc2 --build=debug-profile<Enter><CR>
+nnoremap <silent> [make]p :<C-u>ScreenSend dub run --build=debug-profile<Enter><CR>
 nnoremap <silent> [make]d :<C-u>ScreenSend dub run --build=docs<Enter><CR>
 
 nnoremap [snowdrop] <Nop>
