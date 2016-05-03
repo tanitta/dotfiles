@@ -581,6 +581,7 @@ nnoremap <silent> [git]a :<C-u>Agit<CR>
 nnoremap <silent> [git]s :<C-u>Gstatus<CR>
 nnoremap <silent> [git]c :<C-u>Gcommit<CR>
 nnoremap <silent> [git]p :<C-u>Git push<CR>
+nnoremap <silent> [git]b :<C-u>Gblame<CR>
 
 "unite
 "unite prefix key.
