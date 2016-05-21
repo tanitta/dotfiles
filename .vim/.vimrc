@@ -4,6 +4,9 @@ set noswapfile
 "ColorScheme
 colorscheme newcolor
 :syntax on
+"Force the old regex engine to fix the problem that slow down cursor moving.
+"cf. http://stackoverflow.com/questions/16902317/vim-slow-with-ruby-syntax-highlightingk
+set re=1
 
 " let g:molokai_original = 0
 "let g:rehash256 = 1
@@ -158,6 +161,10 @@ NeoBundle 'rhysd/quickrun-unite-quickfix-outputter'
 " NeoBundle 'nathanaelkane/vim-indent-guides'
 NeoBundle 'Yggdroot/indentLine'
 
+"highlight parenthesis
+let g:loaded_matchparen = 1
+NeoBundle 'itchyny/vim-parenmatch'
+"highlight a word
 NeoBundle "osyo-manga/vim-brightest"
 
 
@@ -188,6 +195,9 @@ NeoBundle 'osyo-manga/vim-snowdrop'
 
 
 NeoBundle 'sbl/scvim'
+
+"ruby
+NeoBundle 'vim-ruby/vim-ruby'
 
 " Processing
 " NeoBundleLazy 'sophacles/vim-processing' , {'autoload' : {'filename_patterns' : '.*\.pde'}}
