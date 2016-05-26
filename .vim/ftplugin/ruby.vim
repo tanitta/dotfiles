@@ -7,3 +7,7 @@ nnoremap <silent> [make]t :<C-u>ScreenSend bundle exec rspec<Enter><CR>
 " set re=1
 
 " nnoremap <silent> [ruby]p :<C-u>QuickRun rp5<CR>
+set expandtab
+set tabstop=2
+set shiftwidth=2
+set softtabstop=2
