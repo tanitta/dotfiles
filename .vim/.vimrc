@@ -135,6 +135,7 @@ NeoBundle 'yuratomo/w3m.vim'
 
 NeoBundle 'vim-scripts/ViewOutput'
 
+NeoBundle 'terryma/vim-multiple-cursors'
 
 NeoBundle 'cohama/lexima.vim'
 
