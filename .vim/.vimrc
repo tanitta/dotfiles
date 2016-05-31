@@ -163,8 +163,8 @@ NeoBundle 'rhysd/quickrun-unite-quickfix-outputter'
 NeoBundle 'Yggdroot/indentLine'
 
 "highlight parenthesis
-let g:loaded_matchparen = 1
-NeoBundle 'itchyny/vim-parenmatch'
+" let g:loaded_matchparen = 1
+" NeoBundle 'itchyny/vim-parenmatch'
 "highlight a word
 NeoBundle "osyo-manga/vim-brightest"
 
