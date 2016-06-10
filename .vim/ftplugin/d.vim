@@ -1,3 +1,8 @@
+set expandtab
+set tabstop=4
+set shiftwidth=4
+set softtabstop=4
+
 nnoremap <silent> [quickrun]q :<C-u>QuickRun d/rdmd -outputter/buffer/split ":botright"<CR>
 nnoremap <silent> [quickrun]t :<C-u>QuickRun d/rdmd_unittest  -outputter/buffer/split ":botright"<CR>
 
@@ -14,6 +19,7 @@ nmap \s [snowdrop]
 nnoremap <silent> [snowdrop]s :<C-u>OverCommandLine<CR>
 nnoremap <silent> [snowdrop]g :<C-u>DUjump<CR>
 nnoremap <silent> [snowdrop]t :<C-u>DUvjump<CR>
+nnoremap <silent> [snowdrop]d :<C-u>DUddoc<CR>
 
 DUDCDstartServer
 
