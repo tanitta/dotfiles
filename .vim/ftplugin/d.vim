@@ -41,7 +41,10 @@ if !exists("g:neocomplete#force_omni_input_patterns")
 endif
 autocmd FileType d setlocal omnifunc=dutyl#dComplete
 let g:neocomplete#force_omni_input_patterns.d = '[^.[:digit:] *\t]\%(\.\|->\)\%(\h\w*\)\?\|\h\w*::\%(\h\w*\)\?'
+" '[^.[:digit:] *\t]\%(\.\|->\)\%(\h\w*\)\?\|\h\w*::\%(\h\w*\)\?'
 " '[^.[:digit:] *\t]\%(\.\|->\)\|::'
+" '\% (because it \t]\.\|^\s*@\|^\s*import \ \w*')  
+" '[^.[:digit:] *\t]\.\|^\s*@\|^\s*import \ \w*'
  
 let g:tagbar_iconchars = ['▸', '▾']
 let g:tagbar_sort = 0
