@@ -81,6 +81,7 @@ source $ZSH/oh-my-zsh.sh
 alias rg="ranger"
 alias v="vim"
 alias sv="sudo vim"
+alias h="htop"
 alias electron="/usr/lib/node_modules/electron-prebuilt/dist/electron"
 source ~/.zshenv
 
