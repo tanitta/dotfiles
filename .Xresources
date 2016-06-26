@@ -8,10 +8,12 @@ ft.dpi:        96
 ! Xft.lcdfilter:  lcddefault
 Xft.autohint: 0
 Xft.lcdfilter:  lcddefault
-Xft.hintstyle:  hintfull
+Xft.hintstyle:  hintnone
 Xft.hinting: 1
-Xft.antialias: 1
+Xft.antialias: -1
 Xft.rgba: rgb
+! urxvt*forcePackedFont: false
+URxvt.letterSpace: -1
 
 urxvt*termName:           rxvt
 urxvt*saveLines:          10000
@@ -27,24 +29,29 @@ urxvt.keysym.C-Home:    \033[1;5H
 ! urxvt*shading:            20
 ! URxvt*inheritPixmap:        True
 
-! urxvt*font: xft:Inconsolata:pixelsize=12:antialias=true:hinting=true, xft:Inconsolata for Powerline:medium:size=12
-urxvt*font :          xft:Inconsolata for Powerline:            pixelsize=12:antialias=true:hinting=true,xft:TakaoPGothic
-urxvt*boldFont:       xft:Inconsolata for Powerline:bold:       pixelsize=12:antialias=true:hinting=true,xft:TakaoPGothic
-urxvt*italicFont:     xft:Inconsolata for Powerline:italic:     pixelsize=12:antialias=true:hinting=true,xft:TakaoPGothic
-urxvt*boldItalicFont: xft:Inconsolata for Powerline:bold:italic:pixelsize=12:antialias=true:hinting=true,xft:TakaoPGothic
+! Inconsolata for Powerline
+! urxvt*font :          xft:Inconsolata for Powerline:            pixelsize=12:antialias=true:hinting=true,xft:TakaoPGothic
+! urxvt*boldFont:       xft:Inconsolata for Powerline:bold:       pixelsize=12:antialias=true:hinting=true,xft:TakaoPGothic
+! urxvt*italicFont:     xft:Inconsolata for Powerline:italic:     pixelsize=12:antialias=true:hinting=true,xft:TakaoPGothic
+! urxvt*boldItalicFont: xft:Inconsolata for Powerline:bold:italic:pixelsize=12:antialias=true:hinting=true,xft:TakaoPGothic
+
+! adobe-source-code-pro-fonts
+! urxvt*font :          xft:Source Code Pro Semibold:pixelsize=11:antialias=true:hinting=true,xft:TakaoPGothic
+! urxvt*boldFont:       xft:Source Code Pro Black:       pixelsize=11:antialias=true:hinting=true,xft:TakaoPGothic
+! urxvt*italicFont:     xft:Source Code Pro SemiboldIt:     pixelsize=11:antialias=true:hinting=true,xft:TakaoPGothic
+! urxvt*boldItalicFont: xft:Source Code Pro BlackIt:pixelsize=11:antialias=true:hinting=true,xft:TakaoPGothic
+
+urxvt*font :          xft:Source Code Pro: Semibold:   pixelsize=11:antialias=true:hinting=true,xft:TakaoPGothic, xft:Inconsolata for Powerline
+urxvt*boldFont:       xft:Source Code Pro: Black:      pixelsize=11:antialias=true:hinting=true,xft:TakaoPGothic, xft:Inconsolata for Powerline:bold:
+urxvt*italicFont:     xft:Source Code Pro: SemiboldIt: pixelsize=11:antialias=true:hinting=true,xft:TakaoPGothic, xft:Inconsolata for Powerline:italic
+urxvt*boldItalicFont: xft:Source Code Pro: BlackIt:    pixelsize=11:antialias=true:hinting=true,xft:TakaoPGothic, xft:Inconsolata for Powerline:bold:italic
+! Inconsolata for Powerline
+! urxvt*font :          xft:Inconsolata:            pixelsize=12:antialias=true:hinting=true,xft:TakaoPGothic
+! urxvt*boldFont:       xft:Inconsolata:bold:       pixelsize=12:antialias=true:hinting=true,xft:TakaoPGothic
+! urxvt*italicFont:     xft:Inconsolata:italic:     pixelsize=12:antialias=true:hinting=true,xft:TakaoPGothic
+! urxvt*boldItalicFont: xft:Inconsolata:bold:italic:pixelsize=12:antialias=true:hinting=true,xft:TakaoPGothic
+
 ! URxvt*font: xft:Terminess Powerline:size=12
-! 
-! urxvt*hintstyle:    hintfull
-! 
-! URxvt*font: xft:Inconsolata:size=13:antialias=true, xft:Inconsolata for Powerline:medium:size=13
-! URxvt*font:xft:Inconsolata:bold:pixelsize=12:antialias=true,xft:Inconsolata\ for\ Powerline:bold:pixelsize=12:antialias=true
-! 
-! URxvt*font:                 xft:Inconsolata-dz-Powerline:regular:pixelsize=12:antialias=true:hinting=true
-! URxvt*imFont:               xft:Inconsolata-dz-Powerline:regular:pixelsize=12:antialias=true:hinting=true
-! URxvt*boldFont:             xft:Inconsolata-dz-Powerline:bold:pixelsize=12:antialias=true:hinting=true
-! URxvt*italicFont:           xft:Inconsolata-dz-Powerline:italic:pixelsize=12:antialias=true:hinting=true
-! URxvt*boldItalicFont:       xft:Inconsolata-dz-Powerline:bold:italic:pixelsize=12:antialias=true:hinting=true
-! Scrollbar
  
 URxvt.scrollStyle:          rxvt
 URxvt.scrollBar:            false
