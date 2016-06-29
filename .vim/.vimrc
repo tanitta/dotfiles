@@ -545,7 +545,10 @@ call lexima#add_rule({
 \})
 
 
-" オレオレキーバインド体系
+" homebrew keybind system
+" 
+" 選択した部分を検索
+vnoremap / "zy:let @/ = @z<CR>n
 
 nnoremap [window] <Nop>
 nmap \w [window]
