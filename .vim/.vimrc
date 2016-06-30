@@ -144,9 +144,6 @@ NeoBundle 'tpope/vim-surround'
 NeoBundle 'kana/vim-textobj-user'
 NeoBundle 'sgur/vim-textobj-parameter'
 
-" working logger
-NeoBundle 'wakatime/vim-wakatime'
-
 " git
 NeoBundle 'tpope/vim-fugitive'
 NeoBundle 'airblade/vim-gitgutter'
