@@ -30,6 +30,7 @@ main = do
         , focusedBorderColor = "#888888"
         -- , startupHook = ewmhDesktopsStartup >> setWMName "LG3D"
         , startupHook = setWMName "LG3D"
+        , handleEventHook = myEventHook
         -- , handleEventHook = handleEventHook defaultConfig <+> fullscreenEventHook 
         }
 myModMask = mod4Mask
@@ -37,9 +38,14 @@ myModMask = mod4Mask
 myLayoutHook = avoidStruts $ layoutHook defaultConfig
 myManageHook = manageDocks <+> manageHook defaultConfig
 
+myEventHook = do
+  docksEventHook
+  -- ewmhDesktopsEventHook -- copied from https://github.com/xmonad/xmonad/issues/15, not yet sure if useful or harmful
+  
 myLogHook h = dynamicLogWithPP wsPP{
   ppOutput = hPutStrLn h
 }
+
               
 wsPP = xmobarPP { ppOrder               = \(ws:l:t:_)   -> [ws,t]
   , ppCurrent             = xmobarColor   colorRed         colorNormalbg
