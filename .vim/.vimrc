@@ -101,6 +101,10 @@ set mouse=a
 " ビルド時に自動保存
 set autowrite
 
+"conceallevel:構文としては必要だが視認性を妨げるものを非表示にする機能
+"jsonのダブルクオーテーション等が非表示になる
+set conceallevel=0
+
 " 保存時に行末の空白を除去
 " function! s:remove_dust()
 "     let cursor = getpos(".")
