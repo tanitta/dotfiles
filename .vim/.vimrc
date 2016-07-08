@@ -101,10 +101,6 @@ set mouse=a
 " ビルド時に自動保存
 set autowrite
 
-"conceallevel:構文としては必要だが視認性を妨げるものを非表示にする機能
-"jsonのダブルクオーテーション等が非表示になる
-set conceallevel=0
-
 " 保存時に行末の空白を除去
 " function! s:remove_dust()
 "     let cursor = getpos(".")
@@ -162,6 +158,10 @@ NeoBundle "git://github.com/osyo-manga/unite-quickfix.git"
 NeoBundle 'rhysd/quickrun-unite-quickfix-outputter'
 " NeoBundle 'nathanaelkane/vim-indent-guides'
 NeoBundle 'Yggdroot/indentLine'
+
+"'Yggdroot/indentLine'でconceallevel=2に書き換えられる対策用
+NeoBundle 'elzr/vim-json'
+let g:vim_json_syntax_conceal = 0
 
 "highlight parenthesis
 " let g:loaded_matchparen = 1
