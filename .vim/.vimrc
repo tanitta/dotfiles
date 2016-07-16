@@ -364,7 +364,7 @@ let g:quickrun_config.processing = {
 \       "runner" : "vimproc",
 \       "runner/vimproc/updatetime" : 60,
 \     'command': 'processing-java',
-\     'exec': '%c --sketch=%s:p:h/ --output=/tmp/processing --run --force' }
+\     'exec': '%c --sketch=%s:p:h/ --output=/tmp/processing --force --run ' }
 
 " let s:hook = {
 " \   "name" : "add_include_option",
