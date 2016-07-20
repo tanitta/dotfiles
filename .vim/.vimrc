@@ -154,7 +154,7 @@ NeoBundle "ctrlpvim/ctrlp.vim"
 NeoBundle 'Shougo/unite.vim'
 NeoBundle 'Shougo/vimfiler.vim'
 NeoBundle 'Shougo/unite-build'
-NeoBundle "git://github.com/osyo-manga/unite-quickfix.git"
+NeoBundle 'osyo-manga/unite-quickfix.git'
 NeoBundle 'rhysd/quickrun-unite-quickfix-outputter'
 " NeoBundle 'nathanaelkane/vim-indent-guides'
 NeoBundle 'Yggdroot/indentLine'
@@ -566,7 +566,8 @@ nnoremap <silent> [window]B :<C-u>Thumbnail<CR>
 let g:EasyMotion_do_mapping = 0
 nnoremap [easym] <Nop>
 " nmap <Space> [easym]
-nmap <Space> <Plug>(easymotion-s2)
+" nmap <Space> <Plug>(easymotion-s2)
+nmap <Space> <Plug>(easymotion-overwin-f2)
 
 nnoremap [make] <Nop>
 nmap \m [make]
