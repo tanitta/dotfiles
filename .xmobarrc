@@ -3,7 +3,8 @@ Config {
 		, bgColor = "#303030"
 		, fgColor = "#BCBCBC"
         -- , position = Static {  height = 15 }
-        , position = Static { xpos = 1280 , ypos = 0, width = 1920, height = 15 }
+        , position = Static { xpos = 1280, ypos = 0, width = 1920, height = 15 }
+        --, position = Static { xpos = 0, ypos = 0, width = 1920, height = 15 }
 		-- , position = Top
 		, lowerOnStart = False
 		, commands = [ Run Weather "EGPF" ["-t",": C","-L","18","-H","25","--normal","B7CE42","--high","D81860","--low","lightblue"] 36000
