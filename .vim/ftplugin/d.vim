@@ -7,8 +7,12 @@ nnoremap <silent> [quickrun]q :<C-u>QuickRun d/rdmd -outputter/buffer/split ":bo
 nnoremap <silent> [quickrun]t :<C-u>QuickRun d/rdmd_unittest  -outputter/buffer/split ":botright"<CR>
 
 nnoremap <silent> [make]m :<C-u>ScreenSend dub run<Enter><CR>
-nnoremap <silent> [make]M :<C-u>ScreenSend dub run --compiler=ldc2 --build=optimized<Enter><CR>
-nnoremap <silent> [make]t :<C-u>ScreenSend dub test<Enter><CR>
+nnoremap <silent> [make]M :<C-u>ScreenSend dub run -f<Enter><CR>
+
+nnoremap <silent> [make]t :<C-u>ScreenSend dub test --compiler=ldc2<Enter><CR>
+nnoremap <silent> [make]T :<C-u>ScreenSend dub test -f --compiler=ldc2<Enter><CR>
+
+nnoremap <silent> [make]r :<C-u>ScreenSend dub run --compiler=ldc2 --build=optimized<Enter><CR>
 nnoremap <silent> [make]s :<C-u>ScreenSend dub run --build=spec<Enter><CR>
 " nnoremap <silent> [make]t :<C-u>ScreenSend dub test && mpg123 -q ~/Music/game01/crrect_answer3.mp3 \|\| mpg123 -q ~/Music/game01/blip01.mp3<Enter><CR>
 nnoremap <silent> [make]p :<C-u>ScreenSend dub run --build=debug-profile<Enter><CR>
