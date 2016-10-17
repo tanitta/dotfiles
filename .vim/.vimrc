@@ -440,12 +440,12 @@ let g:neosnippet#snippets_directory = s:my_snippet
 " \c でカーソル行をコメントアウト
 " 再度 \c でコメントアウトを解除
 " 選択してから複数行の \c も可能
-nmap \c <Plug>(caw:i:toggle)
-vmap \c <Plug>(caw:i:toggle)
+nmap \c <Plug>(caw:hatpos:toggle)
+vmap \c <Plug>(caw:hatpos:toggle)
 
 " \C でコメントアウトの解除
-nmap \C <Plug>(caw:i:uncomment)
-vmap \C <Plug>(caw:i:uncomment)
+nmap \C <Plug>(caw:hatpos:uncomment)
+vmap \C <Plug>(caw:hatpos:uncomment)
 
 "jk同時押しでEsc
 call arpeggio#load()
