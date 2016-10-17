@@ -3,6 +3,7 @@ import XMonad
 import XMonad.Hooks.DynamicLog
 import XMonad.Hooks.ManageDocks
 import XMonad.Util.Run                  -- spawnPipe, hPutStrLn
+import XMonad.Util.EZConfig
 
 import XMonad.Hooks.EwmhDesktops
 import XMonad.Hooks.SetWMName
@@ -33,6 +34,9 @@ main = do
         , handleEventHook = myEventHook
         -- , handleEventHook = handleEventHook defaultConfig <+> fullscreenEventHook 
         }
+        `additionalKeys`
+        [ ((myModMask.|. controlMask, xK_Return), spawn "urxvt -cd \"`xcwd`\"")]
+        
 myModMask = mod4Mask
 
 myLayoutHook = avoidStruts $ layoutHook defaultConfig
