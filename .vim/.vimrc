@@ -17,7 +17,7 @@ set guiheadroom=0
 "半透明
 highlight Normal ctermbg=none
 set ruler
-set number         " 行番号を表示する
+" set number         " 行番号を表示する
 set cursorline     " カーソル行の背景色を変える
 set cursorcolumn   " カーソル位置のカラムの背景色を変える
 " インサートモードに入った時にカーソル行(列)の色を変更する
@@ -212,6 +212,9 @@ NeoBundle 'sophacles/vim-processing'
 " NeoBundleLazy 'sophacles/vim-processing' , {'autoload' : {'filename_patterns' : '.*\.pde'}}
 au BufNewFile,BufRead *.pde setf processing
 
+" Maxima
+NeoBundle 'https://github.com/vim-scripts/maxima.vim'
+
 NeoBundle 'mattn/emmet-vim'
 NeoBundle 'tpope/vim-surround'
 " NeoBundle 'open-browser.vim'
@@ -284,6 +287,9 @@ function! s:vimrc_local(loc)
     source `=i`
   endfor
 endfunction
+
+"ctrlp
+let g:ctrlp_working_path_mode = 0
 
 " ハイライトを有効にします（既定値）
 " BrightestEnable
