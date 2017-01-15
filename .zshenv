@@ -1,4 +1,6 @@
-export EDITOR=vim
+export EDITOR=nvim
+export TERM=rxvt-unicode-256color
+
 
 # PATH の設定（お好みで）
 export PATH="/usr/local/bin:$PATH"

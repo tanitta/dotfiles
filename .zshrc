@@ -79,8 +79,8 @@ source $ZSH/oh-my-zsh.sh
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 alias rg="ranger"
-alias v="vim"
-alias sv="sudo vim"
+alias v="nvim"
+alias sv="sudo nvim"
 alias h="htop"
 alias electron="/usr/lib/node_modules/electron-prebuilt/dist/electron"
 source ~/.zshenv
