@@ -5,7 +5,7 @@ nnoremap <silent> [make]m :<C-u>QuickRun ruby<CR>
 " nnoremap <silent> [make]t :<C-u>ScreenSend bundle exec rspec<Enter><CR>
 
 " minitest
-nnoremap <silent> [make]t :<C-u>ScreenSend bundle exec rake test<Enter><CR>
+nnoremap <silent> [make]t :<C-u>ScreenSend bundle exec rails test<Enter><CR>
 
 "Force the old regex engine to fix the problem that slow down cursor moving.
 " set re=1
