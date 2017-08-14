@@ -4,10 +4,10 @@ if &compatible
 endif
 
 " Required:
-set runtimepath+=/home/tanitta/.config/nvim/dein/repos/github.com/Shougo/dein.vim
+set runtimepath+=/Users/tanitta/.config/nvim/dein/repos/github.com/Shougo/dein.vim
 
 " Required:
-call dein#begin('/home/tanitta/.config/nvim/dein')
+call dein#begin('/Users/tanitta/.config/nvim/dein')
 
 " Let dein manage dein
 " Required:
@@ -19,16 +19,17 @@ call dein#add('Shougo/neosnippet-snippets')
 
 call dein#add('Shougo/unite.vim')
 call dein#add('Shougo/vimfiler.vim')
+call dein#add('francoiscabrol/ranger.vim')
 
 " You can specify revision/branch/tag.
 call dein#add('Shougo/vimshell', { 'rev': '3787e5' })
 
+" VIM Table Mode for instant table creation.
+call dein#add('dhruvasagar/vim-table-mode')
+
 " Dark powered asynchronous completion framework for neovim
 call dein#add('Shougo/deoplete.nvim')
 
-" Dlang
-call dein#add('idanarye/vim-dutyl')
-call dein#add('landaire/deoplete-d')
 
 " File Open
 call dein#add('ctrlpvim/ctrlp.vim')
@@ -72,6 +73,40 @@ call dein#add('itchyny/lightline.vim')
 call dein#add('tpope/vim-surround')
 call dein#add('kana/vim-textobj-user')
 call dein#add('sgur/vim-textobj-parameter')
+
+" ################################################################
+" Dlang
+" call dein#add('idanarye/vim-dutyl')
+call dein#add('tanitta/deoplete-d', { 'rev': 'support-nameless-buffer' })
+
+" ################################################################
+" processing
+call dein#add('sophacles/vim-processing')
+
+" ################################################################
+" rust
+" Vim configuration for Rust.
+call dein#add('rust-lang/rust.vim')
+" Racer support for Vim
+call dein#add('racer-rust/vim-racer')
+
+" ################################################################
+" go
+call dein#add('fatih/vim-go')
+
+" ################################################################
+" docker
+call dein#add('ekalinin/Dockerfile.vim')
+
+" ################################################################
+" fish 
+call dein#add('dag/vim-fish')
+
+" ################################################################
+" GLSL
+" Vim runtime files for OpenGL Shading Language
+call dein#add('tikhomirov/vim-glsl')
+
 
 " Required:
 call dein#end()

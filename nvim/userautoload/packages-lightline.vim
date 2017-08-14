@@ -39,8 +39,8 @@ let g:lightline = {
 \        'qfstatusline': 'qfstatusline#Update',},
 \    'component_type': {
 \        'qfstatusline': 'error',},
-\ 'separator': {'left': '⮀', 'right': '⮂'},
-\ 'subseparator': {'left': '⮁', 'right': '⮃'}
+\ 'separator': {'left': '', 'right': ''},
+\ 'subseparator': {'left': '', 'right': ''}
 \ }
 function! UpdateSyntaxCheck()
 	return function('lightline#update')
@@ -53,7 +53,7 @@ function! MyModified()
 endfunction
 
 function! MyReadonly()
-	return &ft !~? 'help\|vimfiler\|gundo' && &ro ? '⭤' : ''
+	return &ft !~? 'help\|vimfiler\|gundo' && &ro ? '' : ''
 endfunction
 
 function! MyFileDir()
@@ -74,7 +74,7 @@ function! MyFugitive()
 	try
 		if &ft !~? 'vimfiler\|gundo' && exists('*fugitive#head')
 			let _ = fugitive#head()
-			return strlen(_) ? '⭠ '._ : ''
+			return strlen(_) ? ' '._ : ''
 		endif
 	catch
 	endtry

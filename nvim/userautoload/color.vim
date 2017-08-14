@@ -3,8 +3,6 @@ set laststatus=2
 colorscheme newcolor
 set background=dark
 
-set guiheadroom=0
-
 "半透明
 highlight Normal ctermbg=none
 set ruler

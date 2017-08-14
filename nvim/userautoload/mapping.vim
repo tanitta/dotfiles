@@ -1,4 +1,4 @@
-"ESCでハイライトを消す
+let g:ranger_map_keys = 0"ESCでハイライトを消す
 nnoremap <Esc><Esc> :<C-u>noh<Return>
 " nnoremap <Esc><Esc> :<C-u>GhcModTypeClear<Return>
 
@@ -16,6 +16,11 @@ nnoremap <silent> [window]o :<C-u>copen<CR>
 " nnoremap <silent> [window]f :<C-u>Unite -no-split -buffer-name=files -profile-name=buffer -auto-preview file_rec/async:!<cr>
 nnoremap <silent> [window]b :<C-u>Thumbnail here<CR>
 nnoremap <silent> [window]B :<C-u>Thumbnail<CR>
+
+function! s:ReloadVimScript()
+    source ~/.config/nvim/init.vim
+endfunction
+nnoremap <silent> [window]r :<C-u>call ReloadVimScript()<CR>
 
 nnoremap [easym] <Nop>
 " nmap <Space> [easym]

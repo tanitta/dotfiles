@@ -8,3 +8,5 @@ vmap \c <Plug>(caw:hatpos:toggle)
 " \C でコメントアウトの解除
 nmap \C <Plug>(caw:hatpos:uncomment)
 vmap \C <Plug>(caw:hatpos:uncomment)
+
+autocmd FileType glsl let b:caw_oneline_comment = '//'
