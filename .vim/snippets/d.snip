@@ -20,8 +20,7 @@ abbr        writeln
 
 snippet     class
 abbr        class {}
-    /++
-    +/
+    ///
 	class ${1:#:name} {
 		public{
         }//public
@@ -32,8 +31,7 @@ abbr        class {}
    
 snippet     struct 
 abbr        struct {}
-    /++
-    +/
+    ///
 	struct ${1:#:name} {
 		public{
         }//public
@@ -44,8 +42,7 @@ abbr        struct {}
 
 snippet     interface 
 abbr        interface {}
-    /++
-    +/
+    ///
 	interface ${1:#:name} {
 		public{
         }//public
@@ -56,8 +53,7 @@ abbr        interface {}
 
 snippet    template 
 abbr        template {}
-    /++
-    +/
+    ///
 	template ${1:#:name}(${2:#:T}) {
 		public{
         }//public
@@ -69,8 +65,7 @@ abbr        template {}
 
 snippet    enum 
 abbr        enum {}
-    /++
-    +/
+    ///
 	enum ${1:#:name} {
 	}//enum $1
 
@@ -119,3 +114,7 @@ abbr       propAccessor
 	${1:#:T} _${2:#:name};
 	${0}
     
+snippet    todo
+abbr       todo
+	pragma(msg, __FILE__, "(", __LINE__, "): ",
+	       "TODO: ${1:message}");

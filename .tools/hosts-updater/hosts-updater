@@ -1,0 +1,1 @@
+base64 -D /Users/tanitta/.tools/hosts-updater/hosts > /etc/hosts

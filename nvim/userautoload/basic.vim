@@ -1,6 +1,11 @@
 set noswapfile
 :syntax on
 
+" encoding
+" 日本語の文字化けを防ぐ
+" cf. http://ravelll.hatenadiary.jp/entry/2015/08/20/140710
+set fileencodings=utf-8,euc-jp,sjis,cp932,iso-2022-jp
+
 "Force the old regex engine to fix the problem that slow down cursor moving.
 "cf. http://stackoverflow.com/questions/16902317/vim-slow-with-ruby-syntax-highlightingk
 set re=1
@@ -15,6 +20,8 @@ set title "タイトルをウィンドウ枠に表示
 
 " オートインデントを有効にする（新しい行のインデントを現在の行と同じにする）
 set autoindent
+
+set expandtab
 set tabstop=4 "タブ幅
 set shiftwidth=4
 set softtabstop=4
@@ -46,11 +53,33 @@ set pastetoggle=<F2>
 ""a:ビジュアルモードで選択した文字がシステムのクリップボードに入る。他のアプリケーションとクリップボードを共有するオプション。
 set guioptions+=a
 
-" " マウスの入力を受け付ける
+" マウスの入力を受け付ける
 set mouse=a
+
+" 括弧を入力した時に、対応する括弧に一瞬カーソルを飛ばす
+set showmatch
+set matchtime=1
 
 " ビルド時に自動保存
 set autowrite
 
+" バックアップファイル(<filename>~)を生成しない
+set nobackup
+" それでも一瞬だけ生成されるので/tmpを指定
+set backupdir=/tmp
+
 " netrwは常にtree view
 let g:netrw_liststyle = 3
+
+"
+noremap ; :
+noremap : ;
+
+" jjでエスケープ
+" inoremap <silent> jj <ESC>
+
+" 日本語入力で”っj”と入力してもEnterキーで確定させればインサートモードを抜ける
+" inoremap <silent> っｊ <ESC>
+"
+" autocmd BufNewFile,BufRead *.{html,htm,vue*} set filetype=html
+autocmd BufNewFile,BufRead *.vue set filetype=html

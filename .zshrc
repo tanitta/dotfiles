@@ -70,6 +70,15 @@ source $ZSH/oh-my-zsh.sh
 # ssh
 # export SSH_KEY_PATH="~/.ssh/dsa_id"
 
+# ranger
+function ranger() {
+    if [ -z "$RANGER_LEVEL" ]; then
+        /usr/local/bin/ranger $@
+    else
+        exit
+    fi
+}
+
 # Set personal aliases, overriding those provided by oh-my-zsh libs,
 # plugins, and themes. Aliases can be placed here, though oh-my-zsh
 # users are encouraged to define aliases within the ZSH_CUSTOM folder.
@@ -79,11 +88,15 @@ source $ZSH/oh-my-zsh.sh
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 alias rg="ranger"
+alias todev="~/dev/todev/build/mac/todev.app/Contents/MacOS/todev"
 alias v="nvim"
 alias sv="sudo nvim"
 alias h="htop"
 alias electron="/usr/lib/node_modules/electron-prebuilt/dist/electron"
 source ~/.zshenv
+
+# alias armos="dub run -q armos --"
+alias armos="~/dev/armos/armos"
 
 # bindkey -v
 

@@ -1,1 +1,1 @@
-/home/tanitta/dotfiles/colorscheme/vim/newcolor.vim
+/Users/tanitta/dotfiles/colorscheme/vim/newcolor.vim

@@ -17,3 +17,5 @@ call lexima#add_rule({
 \   "char" : '<Enter>',
 \   "input" : '<BS><Enter>',
 \})
+
+let g:lexima_enable_newline_rules=1

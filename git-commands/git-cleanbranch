@@ -1,0 +1,3 @@
+#!/bin/sh
+git remote prune origin
+git branch --merged | grep -v '*' | xargs -I % git branch -d %

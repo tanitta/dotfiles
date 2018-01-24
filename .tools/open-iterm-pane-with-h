@@ -1,0 +1,7 @@
+#!/bin/bash
+cmd1='tell application "iTerm" to activate'
+cmd2='tell application "System Events" to tell process "iTerm" to keystroke "d" using {command down, shift down}'
+cmd3='tell application "System Events" to tell process "iTerm" to keystroke "'$1'"'
+cmd4='tell application "System Events" to tell process "iTerm" to key code 52'
+osascript -e "$cmd1" -e "$cmd2" -e "$cmd3" -e "$cmd4"
+
