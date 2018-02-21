@@ -93,6 +93,7 @@ alias v="nvim"
 alias sv="sudo nvim"
 alias h="htop"
 alias electron="/usr/lib/node_modules/electron-prebuilt/dist/electron"
+alias vconf="v ~/dotfiles/nvim -c pwd"
 source ~/.zshenv
 
 # alias armos="dub run -q armos --"
