@@ -1,0 +1,5 @@
+#!/bin/sh
+prev=$(pwd)
+cd ~/dotfiles/nvim
+nvim
+cd ${prev}
