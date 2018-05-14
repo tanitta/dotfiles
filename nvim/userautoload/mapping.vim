@@ -1,3 +1,6 @@
+noremap ; :
+noremap : ;
+
 map ¥ \
 map! ¥ \
 
@@ -40,6 +43,24 @@ nnoremap <silent> [make]t :<C-u>!ctags -R<Enter><CR>
 
 nnoremap [quickrun] <Nop>
 nmap \q [quickrun]
+
+nnoremap <Up>  :tabnew<CR>
+nnoremap <Left>  :tabprevious<CR>
+nnoremap <Right> :tabnext<CR>
+
+nnoremap <A-Left>  :-tabmove<cr>
+nnoremap <A-Right> :+tabmove<cr>
+
+" nnoremap <C-c> :tabclose<CR>
+" nnoremap <C-n> :tabnew<CR>
+" nnoremap <C-h> :tabprevious<CR>
+" nnoremap <C-l> :tabnext<CR>
+" nnoremap <C-Right> :<C-u>tabn<CR>
+" nnoremap <C-Left> :<C-u>tabp<CR>
+" inoremap <C-Right> <ESC>:tabn<CR>
+" inoremap <C-Left> <ESC>:tabp<CR>
+" cnoremap <C-Right> <C-u>tabn
+" cnoremap <C-Left> <C-u>tabp
 
 " nnoremap [dictionary] <Nop>
 " nmap \d [dictionary]

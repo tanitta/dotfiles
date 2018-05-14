@@ -71,10 +71,6 @@ set backupdir=/tmp
 " netrwは常にtree view
 let g:netrw_liststyle = 3
 
-"
-noremap ; :
-noremap : ;
-
 " jjでエスケープ
 " inoremap <silent> jj <ESC>
 
