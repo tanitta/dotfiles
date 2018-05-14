@@ -1,7 +1,7 @@
 let g:OmniSharp_selector_ui = 'ctrlp'  " Use ctrlp.vim
 let g:OmniSharp_server_type = 'v1'
 let g:omnicomplete_fetch_full_documentation=1
-set completeopt=longest,menuone,preview
+set completeopt=longest,menuone
 " set completeopt+=preview
 " set splitbelow
 let g:syntastic_cs_checkers = ['syntax', 'semantic']
