@@ -1,3 +1,10 @@
 let g:netrw_dirhistmax  =10
-let g:netrw_dirhist_cnt =1
-let g:netrw_dirhist_1='/Users/tanitta/dev/of_v0.9.8_osx_release/apps/myApps/rigidchips'
+let g:netrw_dirhist_cnt =8
+let g:netrw_dirhist_1='/Users/tanitta/dotfiles/nvim'
+let g:netrw_dirhist_2='/Users/tanitta/dotfiles/nvim/userautoload'
+let g:netrw_dirhist_3='/Users/tanitta/dotfiles/nvim'
+let g:netrw_dirhist_4='/Users/tanitta/dotfiles/nvim/dein'
+let g:netrw_dirhist_5='/Users/tanitta/dotfiles/nvim/ftplugin'
+let g:netrw_dirhist_6='/Users/tanitta/dotfiles/nvim'
+let g:netrw_dirhist_7='/Users/tanitta/dev/chocobo/setup-lfs-file-types.sh'
+let g:netrw_dirhist_8='/Users/tanitta/learning/nand2tetris/projects/00'
