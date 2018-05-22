@@ -87,6 +87,7 @@ function ranger() {
 # Example aliases
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
+alias g=git
 alias rg="ranger"
 alias todev="~/dev/todev/build/mac/todev.app/Contents/MacOS/todev"
 alias v="nvim"
