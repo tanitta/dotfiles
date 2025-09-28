@@ -72,40 +72,26 @@ require("lazy").setup({
 			"neovim/nvim-lspconfig",
 		},
 	},
-	{
-		'hrsh7th/nvim-cmp',
-		dependencies = {
-			'hrsh7th/cmp-nvim-lsp',
-		}
-	},
+	-- {
+	-- 	'hrsh7th/nvim-cmp',
+	-- 	dependencies = {
+	-- 		'hrsh7th/cmp-nvim-lsp',
+	-- 	}
+	-- },
+	-- {
+	-- 	"hrsh7th/cmp-cmdline",
+	-- 	dependencies = { "hrsh7th/nvim-cmp" },
+	-- },
 	{
 		"numToStr/Comment.nvim",
 		config = function()
 			require("Comment").setup()
 		end
 	},
-	{
-		"hrsh7th/cmp-cmdline",
-		dependencies = { "hrsh7th/nvim-cmp" },
-		config = function()
-			local cmp = require("cmp")
-			-- ":" コマンドラインでの補完
-			cmp.setup.cmdline(":", {
-				mapping = cmp.mapping.preset.cmdline(),
-				sources = {
-					{ name = "path" },
-					{ name = "cmdline" },
-				},
-			})
-			-- "/" 検索での補完
-			cmp.setup.cmdline("/", {
-				mapping = cmp.mapping.preset.cmdline(),
-				sources = {
-					{ name = "buffer" },
-				},
-			})
-		end,
-	},
+	-- {
+	-- 	"hrsh7th/cmp-path",
+	-- 	dependencies = { "hrsh7th/nvim-cmp" }
+	-- },
 	{
 		"nvim-telescope/telescope.nvim",
 		tag = "0.1.6",
@@ -158,6 +144,10 @@ require("lazy").setup({
 			require("nvim-reload")
 			-- キーマップは不要、コマンドだけ使う
 		end,
+	},
+	{
+		"mg979/vim-visual-multi",
+		branch = "master",
 	},
 	{
 		"RRethy/vim-illuminate",
@@ -239,25 +229,138 @@ require("lazy").setup({
 				copilot_node_command = 'node',
 				filetypes = {
 					hlsl = true,
-					shader = true,
+					cg = true,
+					shaderlab= true,
 					cginc = true,
 					lua = true,
+					rust = true,
 				},
 			})
 		end,
 	},
 	{
-		"zbirenbaum/copilot-cmp",
-		config = function ()
-			require("copilot_cmp").setup()
-		end
+	  'saghen/blink.cmp',
+	  -- optional: provides snippets for the snippet source
+	  dependencies = { 
+		  'rafamadriz/friendly-snippets',
+		  "giuxtaposition/blink-cmp-copilot",
+	  },
+
+	  -- use a release tag to download pre-built binaries
+	  version = '1.*',
+	  -- AND/OR build from source, requires nightly: https://rust-lang.github.io/rustup/concepts/channels.html#working-with-nightly-rust
+	  -- build = 'cargo build --release',
+	  -- If you use nix, you can build from source using latest nightly rust with:
+	  -- build = 'nix run .#build-plugin',
+
+	  ---@module 'blink.cmp'
+	  ---@type blink.cmp.Config
+	  opts = {
+		-- 'default' (recommended) for mappings similar to built-in completions (C-y to accept)
+		-- 'super-tab' for mappings similar to vscode (tab to accept)
+		-- 'enter' for enter to accept
+		-- 'none' for no mappings
+		--
+		-- All presets have the following mappings:
+		-- C-space: Open menu or open docs if already open
+		-- C-n/C-p or Up/Down: Select next/previous item
+		-- C-e: Hide menu
+		-- C-k: Toggle signature help (if signature.enabled = true)
+		--
+		-- See :h blink-cmp-config-keymap for defining your own keymap
+		keymap = { preset = 'super-tab' },
+
+		-- appearance = {
+		--   -- 'mono' (default) for 'Nerd Font Mono' or 'normal' for 'Nerd Font'
+		--   -- Adjusts spacing to ensure icons are aligned
+		--   nerd_font_variant = 'mono'
+		-- },
+		appearance = {
+			-- Blink does not expose its default kind icons so you must copy them all (or set your custom ones) and add Copilot
+			nerd_font_variant = 'mono',
+			kind_icons = {
+				Copilot = "",
+				Text = '󰉿',
+				Method = '󰊕',
+				Function = '󰊕',
+				Constructor = '󰒓',
+
+				Field = '󰜢',
+				Variable = '󰆦',
+				Property = '󰖷',
+
+				Class = '󱡠',
+				Interface = '󱡠',
+				Struct = '󱡠',
+				Module = '󰅩',
+
+				Unit = '󰪚',
+				Value = '󰦨',
+				Enum = '󰦨',
+				EnumMember = '󰦨',
+
+				Keyword = '󰻾',
+				Constant = '󰏿',
+
+				Snippet = '󱄽',
+				Color = '󰏘',
+				File = '󰈔',
+				Reference = '󰬲',
+				Folder = '󰉋',
+				Event = '󱐋',
+				Operator = '󰪚',
+				TypeParameter = '󰬛',
+			},
+		},
+
+		-- (Default) Only show the documentation popup when manually triggered
+		completion = { documentation = { auto_show = false } },
+
+		-- Default list of enabled providers defined so that you can extend it
+		-- elsewhere in your config, without redefining it, due to `opts_extend`
+		sources = {
+			default = { 'lsp', 'path', 'snippets', 'buffer', 'copilot' },
+			providers = {
+				copilot = {
+					name = "copilot",
+					module = "blink-cmp-copilot",
+					score_offset = 100,
+					async = true,
+					transform_items = function(_, items)
+						local CompletionItemKind = require("blink.cmp.types").CompletionItemKind
+						local kind_idx = #CompletionItemKind + 1
+						CompletionItemKind[kind_idx] = "Copilot"
+						for _, item in ipairs(items) do
+							item.kind = kind_idx
+						end
+						return items
+					end,
+				},
+			},
+		},
+
+		-- (Default) Rust fuzzy matcher for typo resistance and significantly better performance
+		-- You may use a lua implementation instead by using `implementation = "lua"` or fallback to the lua implementation,
+		-- when the Rust fuzzy matcher is not available, by using `implementation = "prefer_rust"`
+		--
+		-- See the fuzzy documentation for more information
+		fuzzy = { implementation = "prefer_rust_with_warning" }
+	  },
+	  opts_extend = { "sources.default" }
 	}
+	-- {
+	-- 	"zbirenbaum/copilot-cmp",
+	-- 	config = function ()
+	-- 		require("copilot_cmp").setup()
+	-- 	end
+	-- }
 })
 
 vim.opt.tabstop = 4
 vim.opt.softtabstop = 4
 vim.opt.shiftwidth = 4
 vim.opt.wrap = false
+vim.opt.list = true
 vim.api.nvim_create_autocmd("BufWinEnter", {
 	pattern = "*",
 	command = "setlocal nowrap",
@@ -290,7 +393,6 @@ vim.cmd([[colorscheme molokai]])
 -- vim.opt.winblend = 0 -- ウィンドウの不透明度
 -- vim.opt.pumblend = 0 -- ポップアップメニューの不透明度
 
-local capabilities = require("cmp_nvim_lsp").default_capabilities()
 
 require("mason").setup()
 if vim.fn.has("win32") == 1 or vim.fn.has("win64") == 1 then
@@ -299,18 +401,11 @@ if vim.fn.has("win32") == 1 or vim.fn.has("win64") == 1 then
 	})
 end
 
-vim.lsp.config('*', {
-	capabilities = require('cmp_nvim_lsp').default_capabilities(),
-})
---[[
-local set = vim.keymap.set
-set('n','H','<cmd>cs vim.lsp.buf.hover()<CR>')
-set('n','gj','<cmd>cs vim.lsp.buf.definition()<CR>')
-set('n','gf','<cmd>cs vim.lsp.buf.formatting()<CR>')
-set('n','gr','<cmd>cs vim.lsp.buf.references()<CR>')
-set('n','gR','<cmd>cs vim.lsp.buf.rename()<CR>')
-set('n','ga','<cmd>cs vim.lsp.buf.code_action()<CR>')
-]]--
+-- local capabilities = require("cmp_nvim_lsp").default_capabilities()
+-- vim.lsp.config('*', {
+-- 	capabilities = require('cmp_nvim_lsp').default_capabilities(),
+-- })
+
 
 -- auto lspconfig setting
 --[[
@@ -331,51 +426,94 @@ local has_words_before = function()
   return col ~= 0 and vim.api.nvim_buf_get_text(0, line-1, 0, line-1, col, {})[1]:match("^%s*$") == nil
 end
 
-local cmp = require("cmp")
-cmp.setup({
-	sources = {
-		{ name = "nvim_lsp" },
-		{ name = 'copilot' },
-	},
-	mapping = cmp.mapping.preset.insert({
-		["<C-n>"] = cmp.mapping.select_next_item(), -- 既存
-		["<C-p>"] = cmp.mapping.select_prev_item(), -- 既存
+-- local cmp = require("cmp")
+-- cmp.setup({
+-- 	sources = {
+-- 		{ name = "nvim_lsp" },
+-- 		{ name = 'copilot' },
+-- 	},
+-- 	mapping = cmp.mapping.preset.insert({
+-- 		["<C-n>"] = cmp.mapping.select_next_item(), -- 既存
+-- 		["<C-p>"] = cmp.mapping.select_prev_item(), -- 既存
+--
+-- 		["<Tab>"] = vim.schedule_wrap(function(fallback)
+-- 			if cmp.visible() and has_words_before() then
+-- 				cmp.confirm({select = true})
+-- 			else
+-- 				fallback()
+-- 			end
+-- 		end),
+--
+-- 		["<S-Tab>"] = cmp.mapping(function(fallback)
+-- 			if cmp.visible() then
+-- 				cmp.select_prev_item()
+-- 			elseif vim.snippet and vim.snippet.active({ direction = -1 }) then
+-- 				vim.snippet.jump(-1)
+-- 			else
+-- 				fallback()
+-- 			end
+-- 		end, { "i", "s" }),
+--
+-- 		["<CR>"] = cmp.mapping.confirm({ select = false }), -- Enterで決定
+-- 	}),
+-- 	snippet = {
+-- 		expand = function(args)
+-- 			vim.snippet.expand(args.body)
+-- 		end,
+-- 	}
+-- })
+--
+--
+-- cmp.setup.cmdline(':', {
+-- 	mapping = cmp.mapping.preset.cmdline(),
+-- 	sources = cmp.config.sources({
+-- 		{ 
+-- 			name = "path", 
+-- 			option = { label_trailing_slash = false},
+-- 		},
+-- 	}, 
+-- 	{
+-- 		{
+-- 			name = 'cmdline',
+-- 			option = {
+-- 				ignore_cmds = { 'Man', '!' }
+-- 			}
+-- 		}
+-- 	}),
+-- 	-- matching = { disallow_symbol_nonprefix_matching = false }
+-- })
+-- cmp.setup.cmdline("/", {
+-- 	mapping = cmp.mapping.preset.cmdline(),
+-- 	sources = {
+-- 		{ name = "buffer" },
+-- 	},
+-- })
 
-		["<Tab>"] = vim.schedule_wrap(function(fallback)
-			if cmp.visible() and has_words_before() then
-				cmp.confirm({select = true})
-			else
-				fallback()
-			end
-		end),
 
-		["<S-Tab>"] = cmp.mapping(function(fallback)
-			if cmp.visible() then
-				cmp.select_prev_item()
-			elseif vim.snippet and vim.snippet.active({ direction = -1 }) then
-				vim.snippet.jump(-1)
-			else
-				fallback()
-			end
-		end, { "i", "s" }),
 
-		["<CR>"] = cmp.mapping.confirm({ select = false }), -- Enterで決定
-	}),
-	snippet = {
-		expand = function(args)
-			vim.snippet.expand(args.body)
-		end,
-	}
-})
+
 
 vim.api.nvim_create_user_command("OpenConfig", function()
 	vim.cmd("edit " .. vim.fn.stdpath("config") .. "/init.lua")
 end, {})
 
+local lualine_auto_theme = require("lualine.themes.auto")
+lualine_auto_theme.inactive.a = { fg = "#808080", bg = "#181a1b" }
+lualine_auto_theme.inactive.b = { fg = "#808080", bg = "#181a1b" }
+lualine_auto_theme.inactive.c = { fg = "#808080", bg = "#181a1b" }
+lualine_auto_theme.inactive.x = { fg = "#808080", bg = "#181a1b" }
+lualine_auto_theme.inactive.y = { fg = "#808080", bg = "#181a1b" }
+lualine_auto_theme.inactive.z = { fg = "#808080", bg = "#181a1b" }
 require('lualine').setup {
 	options = {
 		icons_enabled = true,
-		theme = 'auto',
+		theme = lualine_auto_theme,
+		-- inactive = {
+				-- 	a = {bg = colors.darkgray, fg = colors.gray, gui = 'bold'},
+				-- 	b = {bg = colors.darkgray, fg = colors.gray},
+				-- 	c = {bg = colors.darkgray, fg = colors.gray}
+				-- }
+		-- },
 		component_separators = { left = '', right = ''},
 		section_separators = { left = '', right = ''},
 		disabled_filetypes = {
@@ -506,5 +644,11 @@ end, { noremap = true, silent = true })
 -- vim.api.nvim_set_keymap('t', '<Esc>', '<C-\\><C-n>', opts)
 
 
+vim.api.nvim_create_autocmd("FileType", {
+  pattern = { "shaderlab", "hlsl", "cginc" },
+  callback = function()
+    vim.bo.commentstring = "// %s"
+  end,
+})
 
 
