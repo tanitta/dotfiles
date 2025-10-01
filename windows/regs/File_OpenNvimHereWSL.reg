@@ -1,0 +1,8 @@
+Windows Registry Editor Version 5.00
+
+[HKEY_CLASSES_ROOT\*\shell\OpenNvimHereWSL]
+@="Open with nvim (WSL tgw)"
+"Icon"="C:\\Windows\\System32\\wsl.exe"
+
+[HKEY_CLASSES_ROOT\*\shell\OpenNvimHereWSL\command]
+@="wsl.exe sh -lc \"nvim \\\"$(wslpath -a '%1')\\\"; exec $SHELL -l\""
