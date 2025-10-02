@@ -21,7 +21,32 @@ require("lazy").setup({
 			"MunifTanjim/nui.nvim",
 			"nvim-tree/nvim-web-devicons", -- optional, but recommended
 		},
+		opts = {
+			filesystem = {
+				-- follow_current_file = { enabled = true },
+				-- hijack_netrw_behavior = "open_current",
+				-- use_libuv_file_watcher = true,
+				filtered_items = {
+					visible = false, -- デフォルトで隠されているかどうか
+					show_hidden_count = true,
+					hide_dotfiles = false, -- dotfileを隠すかどうか
+					hide_gitignored = false, -- gitignoreされているファイルを隠すかどうか
+					-- hide_by_name = {
+					-- 	"node_modules",
+					-- 	"thumbs.db",
+					-- },
+					never_show = {
+						".git",
+						".DS_Store",
+						".history",
+					},
+				},
+			},
+		},
 		lazy = false, -- neo-tree will lazily load itself
+		config = function()
+			vim.keymap.set("n", "<leader>we", "<cmd>Neotree toggle<CR>", { noremap = true, silent = true })
+		end,
 	},
 	{
 		"folke/noice.nvim",
@@ -111,14 +136,19 @@ require("lazy").setup({
 				pickers = {
 					find_files = {
 						sorter = sorters.get_fzy_sorter(),
+						hidden = true,
 					},
 					live_grep = {
 						sorter = sorters.get_fzy_sorter(),
+						additional_args = function(_)
+							return { "--hidden" }
+						end,
 					},
 				},
 			})
 			-- telescope.load_extension("asearch") -- exposes :Telescope asearch … pickers (init.lua:69-87)
-			vim.keymap.set("n", "<C-p>", "<cmd>Telescope find_files<CR>", { noremap = true, silent = true })
+			vim.keymap.set("n", "<leader>p", "<cmd>Telescope find_files<CR>", { noremap = true, silent = true })
+			vim.keymap.set("n", "<leader>P", "<cmd>Telescope commands<CR>", { noremap = true, silent = true, desc = "Command palette" })
 		end,
 	},
 
@@ -238,6 +268,16 @@ require("lazy").setup({
 			})
 		end,
 	},
+	-- {
+	-- 	"CopilotC-Nvim/CopilotChat.nvim",
+	-- 	dependencies = {
+	-- 		{ "nvim-lua/plenary.nvim", branch = "master" },
+	-- 	},
+	-- 	build = "make tiktoken",
+	-- 	opts = {
+	-- 		-- See Configuration section for options
+	-- 	},
+	-- },
 	{
 	  'saghen/blink.cmp',
 	  -- optional: provides snippets for the snippet source
@@ -347,6 +387,24 @@ require("lazy").setup({
 		fuzzy = { implementation = "prefer_rust_with_warning" }
 	  },
 	  opts_extend = { "sources.default" }
+	},
+	{
+		"folke/which-key.nvim",
+		event = "VeryLazy",
+		opts = {
+			-- your configuration comes here
+			-- or leave it empty to use the default settings
+			-- refer to the configuration section below
+		},
+		keys = {
+			{
+				"<leader>?",
+				function()
+					require("which-key").show({ global = false })
+				end,
+				desc = "Buffer Local Keymaps (which-key)",
+			},
+		},
 	}
 	-- {
 	-- 	"zbirenbaum/copilot-cmp",
@@ -356,6 +414,7 @@ require("lazy").setup({
 	-- }
 })
 
+vim.opt.autochdir = false
 vim.opt.tabstop = 4
 vim.opt.softtabstop = 4
 vim.opt.shiftwidth = 4
@@ -419,6 +478,15 @@ require('mason-lspconfig').setup_handlers {
 }
 ]]--
 
+vim.api.nvim_create_autocmd("CursorHold", {
+  callback = function()
+    vim.diagnostic.open_float(nil, {
+      focus = false,        -- ← フォーカスを奪わない
+      border = "rounded",   -- ← 枠線のスタイル（"single", "double", "shadow" などもOK）
+      scope = "cursor",     -- ← カーソル位置の診断だけ表示
+    })
+  end,
+})
 
 local has_words_before = function()
   if vim.api.nvim_buf_get_option(0, "buftype") == "prompt" then return false end
