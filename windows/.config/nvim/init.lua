@@ -52,7 +52,21 @@ require("lazy").setup({
 		"folke/noice.nvim",
 		event = "VeryLazy",
 		opts = {
-			-- add any options here
+			-- top_down = false
+			-- views = {
+			-- 	mini = {
+			-- 		position = {
+			-- 			row = -2,  -- 下から2行目に
+			-- 			col = "50%",
+			-- 		},
+			-- 	},
+			-- 	notify = {
+			-- 		position = {
+			-- 			row = -3,
+			-- 			col = "50%",
+			-- 		},
+			-- 	},
+			-- }
 		},
 		dependencies = {
 			-- if you lazy-load any plugin below, make sure to add proper `module="..."` entries
@@ -61,6 +75,13 @@ require("lazy").setup({
 			--   `nvim-notify` is only needed, if you want to use the notification view.
 			--   If not available, we use `mini` as the fallback
 			"rcarriga/nvim-notify",
+		}
+	},
+	{
+		"rcarriga/nvim-notify",
+		opts = {
+			-- [How to position the message and pupup windows to the lower right corner of the UI? · folke/noice\.nvim · Discussion \#469](https://github.com/folke/noice.nvim/discussions/469#discussioncomment-9570150)
+			top_down = false
 		}
 	},
 	{
@@ -719,4 +740,8 @@ vim.api.nvim_create_autocmd("FileType", {
   end,
 })
 
+vim.api.nvim_create_user_command("Drop", function(opts)
+  vim.cmd("tab drop " .. opts.args)
+  vim.cmd("wincmd p")
+end, { nargs = 1 })
 
