@@ -67,6 +67,17 @@ finally {
 # Write-Host "pipe: $pipe"
 # Write-Host "line: $line"
 
+# vim cmd
+if ($absFile) {
+	if ($line) {
+		$nvimCmd = "tcd $root | keepalt edit $escaped | $line"
+	} else {
+		$nvimCmd = "tcd $root | keepalt edit $escaped"
+	}
+} else {
+	$nvimCmd = "tcd $root"
+}
+
 Push-Location $root
 try {
 	if ($absFile) {
@@ -75,17 +86,9 @@ try {
 		$escaped = $relative -replace '\\', '/'
 	}
 
-	if (Test-Path $pipe) {
-		if ($absFile) {
-			if ($line) {
-				Invoke-NvimCommand "tcd $root | keepalt edit $escaped | $line"
-			} else {
-				Invoke-NvimCommand "tcd $root | keepalt edit $escaped"
-			}
-		} else {
-			Invoke-NvimCommand "tcd $root"
-		}
-	}
+    if (Test-Path $pipe) {
+        Invoke-NvimCommand $nvimCmd
+    }
 	else {
 		Push-Location $root
 			try {
@@ -109,6 +112,7 @@ try {
 finally {
 	Pop-Location
 }
+
 
 
 
