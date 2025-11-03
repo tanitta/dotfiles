@@ -44,6 +44,17 @@ require("lazy").setup({
             vim.keymap.set("n", "<leader>we", "<cmd>Neotree toggle<CR>", { noremap = true, silent = true })
         end,
     },
+    -- {
+    --     'stevearc/oil.nvim',
+    --     ---@module 'oil'
+    --     ---@type oil.SetupOpts
+    --     opts = {},
+    --     -- Optional dependencies
+    --     dependencies = { { "nvim-mini/mini.icons", opts = {} } },
+    --     -- dependencies = { "nvim-tree/nvim-web-devicons" }, -- use if you prefer nvim-web-devicons
+    --     -- Lazy loading is not recommended because it is very tricky to make it work correctly in all situations.
+    --     lazy = false,
+    -- },
     {
         "folke/noice.nvim",
         event = "VeryLazy",
@@ -86,6 +97,7 @@ require("lazy").setup({
         },
         version = '^1.0.0', -- optional: only update when a new 1.x version is released
     },
+    -- LSP
     {
         "mason-org/mason.nvim",
         opts = {}
@@ -99,10 +111,30 @@ require("lazy").setup({
         },
     },
     {
+        "j-hui/fidget.nvim",
+        opts = {
+            -- options
+        },
+    },
+    {
         "numToStr/Comment.nvim",
         config = function()
             require("Comment").setup()
         end
+    },
+    {
+        "folke/flash.nvim",
+        event = "VeryLazy",
+        ---@type Flash.Config
+        opts = {},
+        keys = {
+            { "<space>", mode = { "n", "x", "o" }, function() require("flash").jump() end, desc = "Flash" },
+            { "<leader><space>s", mode = { "n", "x", "o" }, function() require("flash").jump() end, desc = "Flash" },
+            { "<leader><space>S", mode = { "n", "x", "o" }, function() require("flash").treesitter() end, desc = "Flash Treesitter" },
+            { "<leader><space>r", mode = "o", function() require("flash").remote() end, desc = "Remote Flash" },
+            { "<leader><space>R", mode = { "o", "x" }, function() require("flash").treesitter_search() end, desc = "Treesitter Search" },
+            { "<leader><space><c-s>", mode = { "c" }, function() require("flash").toggle() end, desc = "Toggle Flash Search" },
+        },
     },
     {
         "nvim-telescope/telescope.nvim",
@@ -119,6 +151,9 @@ require("lazy").setup({
                     -- sorting_strategy = "ascending",  -- 必要なら: リストを上から昇順に
                     -- file_sorter = sorters.get_fzy_sorter,
                     -- generic_sorter = sorters.get_fzy_sorter,
+                    file_ignore_patterns = {
+                        "%.git/",   -- .git以下を無視
+                    },
                 },
                 pickers = {
                     find_files = {
@@ -182,6 +217,21 @@ require("lazy").setup({
             })
         end
     },
+    -- Git
+    {
+      "NeogitOrg/neogit",
+      dependencies = {
+        "nvim-lua/plenary.nvim",         -- required
+        "sindrets/diffview.nvim",        -- optional - Diff integration
+
+        -- Only one of these is needed.
+        "nvim-telescope/telescope.nvim", -- optional
+        "ibhagwan/fzf-lua",              -- optional
+        "nvim-mini/mini.pick",           -- optional
+        "folke/snacks.nvim",             -- optional
+      },
+    },
+    { "tpope/vim-fugitive" },
     {
         "lewis6991/gitsigns.nvim",
         event = { "BufReadPre", "BufNewFile" },
@@ -238,29 +288,29 @@ require("lazy").setup({
     {
         "zbirenbaum/copilot.lua",
         cmd = "Copilot",
-        -- event = "InsertEnter",
-        config = function()
-            require("copilot").setup({
-                suggestion = { enabled = false },
-                panel = { enabled = false },
-                copilot_node_command = 'node',
-                filetypes = {
-                    hlsl = true,
-                    cg = true,
-                    shaderlab= true,
-                    cginc = true,
-                    lua = true,
-                    rust = true,
-                },
-            })
-        end,
+        event = "InsertEnter",
+        opts = {
+            suggestion = { enabled = false },
+            panel = { enabled = false },
+            filetypes = {
+                hlsl = true,
+                cg = true,
+                shaderlab= true,
+                cginc = true,
+                lua = true,
+                rust = true,
+
+            },
+        },
     },
     {
         'saghen/blink.cmp',
+        -- optional = true,
         -- optional: provides snippets for the snippet source
         dependencies = { 
             'rafamadriz/friendly-snippets',
-            "giuxtaposition/blink-cmp-copilot",
+            -- "giuxtaposition/blink-cmp-copilot",
+            "fang2hou/blink-copilot",
         },
 
         -- use a release tag to download pre-built binaries
@@ -331,23 +381,35 @@ require("lazy").setup({
             -- Default list of enabled providers defined so that you can extend it
             -- elsewhere in your config, without redefining it, due to `opts_extend`
             sources = {
-                default = { 'lsp', 'path', 'snippets', 'buffer', 'copilot' },
+                default = {
+                    'lsp',
+                    'path',
+                    'snippets',
+                    'buffer',
+                    'copilot',
+                },
                 providers = {
                     copilot = {
                         name = "copilot",
-                        module = "blink-cmp-copilot",
+                        module = "blink-copilot",
                         score_offset = 100,
                         async = true,
-                        transform_items = function(_, items)
-                            local CompletionItemKind = require("blink.cmp.types").CompletionItemKind
-                            local kind_idx = #CompletionItemKind + 1
-                            CompletionItemKind[kind_idx] = "Copilot"
-                            for _, item in ipairs(items) do
-                                item.kind = kind_idx
-                            end
-                            return items
-                        end,
                     },
+                    -- copilot = {
+                    --     name = "copilot",
+                    --     module = "blink-cmp-copilot",
+                    --     score_offset = 100,
+                    --     async = true,
+                    --     transform_items = function(_, items)
+                    --         local CompletionItemKind = require("blink.cmp.types").CompletionItemKind
+                    --         local kind_idx = #CompletionItemKind + 1
+                    --         CompletionItemKind[kind_idx] = "Copilot"
+                    --         for _, item in ipairs(items) do
+                    --             item.kind = kind_idx
+                    --         end
+                    --         return items
+                    --     end,
+                    -- },
                 },
             },
 
@@ -377,6 +439,54 @@ require("lazy").setup({
                 desc = "Buffer Local Keymaps (which-key)",
             },
         },
+    },
+    {
+      "Isrothy/neominimap.nvim",
+      version = "v3.x.x",
+      lazy = false, -- NOTE: NO NEED to Lazy load
+      -- Optional. You can alse set your own keybindings
+      keys = {
+        -- Global Minimap Controls
+        { "<leader>nm", "<cmd>Neominimap Toggle<cr>", desc = "Toggle global minimap" },
+        { "<leader>no", "<cmd>Neominimap Enable<cr>", desc = "Enable global minimap" },
+        { "<leader>nc", "<cmd>Neominimap Disable<cr>", desc = "Disable global minimap" },
+        { "<leader>nr", "<cmd>Neominimap Refresh<cr>", desc = "Refresh global minimap" },
+
+        -- Window-Specific Minimap Controls
+        { "<leader>nwt", "<cmd>Neominimap WinToggle<cr>", desc = "Toggle minimap for current window" },
+        { "<leader>nwr", "<cmd>Neominimap WinRefresh<cr>", desc = "Refresh minimap for current window" },
+        { "<leader>nwo", "<cmd>Neominimap WinEnable<cr>", desc = "Enable minimap for current window" },
+        { "<leader>nwc", "<cmd>Neominimap WinDisable<cr>", desc = "Disable minimap for current window" },
+
+        -- Tab-Specific Minimap Controls
+        { "<leader>ntt", "<cmd>Neominimap TabToggle<cr>", desc = "Toggle minimap for current tab" },
+        { "<leader>ntr", "<cmd>Neominimap TabRefresh<cr>", desc = "Refresh minimap for current tab" },
+        { "<leader>nto", "<cmd>Neominimap TabEnable<cr>", desc = "Enable minimap for current tab" },
+        { "<leader>ntc", "<cmd>Neominimap TabDisable<cr>", desc = "Disable minimap for current tab" },
+
+        -- Buffer-Specific Minimap Controls
+        { "<leader>nbt", "<cmd>Neominimap BufToggle<cr>", desc = "Toggle minimap for current buffer" },
+        { "<leader>nbr", "<cmd>Neominimap BufRefresh<cr>", desc = "Refresh minimap for current buffer" },
+        { "<leader>nbo", "<cmd>Neominimap BufEnable<cr>", desc = "Enable minimap for current buffer" },
+        { "<leader>nbc", "<cmd>Neominimap BufDisable<cr>", desc = "Disable minimap for current buffer" },
+
+        ---Focus Controls
+        { "<leader>nf", "<cmd>Neominimap Focus<cr>", desc = "Focus on minimap" },
+        { "<leader>nu", "<cmd>Neominimap Unfocus<cr>", desc = "Unfocus minimap" },
+        { "<leader>ns", "<cmd>Neominimap ToggleFocus<cr>", desc = "Switch focus on minimap" },
+      },
+      init = function()
+        -- The following options are recommended when layout == "float"
+        vim.opt.wrap = false
+        vim.opt.sidescrolloff = 36 -- Set a large value
+
+        --- Put your configuration here
+        ---@type Neominimap.UserConfig
+        vim.g.neominimap = {
+          auto_enable = true,
+          layout = "split", ---@type Neominimap.Config.LayoutType
+        }
+      end,
     }
 })
 -- vim.g.lua_indent_disable = true
@@ -440,6 +550,29 @@ vim.cmd([[colorscheme molokai]])
 -- vim.opt.winblend = 0 -- ウィンドウの不透明度
 -- vim.opt.pumblend = 0 -- ポップアップメニューの不透明度
 
+vim.o.updatetime = 800
+vim.api.nvim_create_autocmd("LspAttach", {
+  callback = function(ctx)
+    local set = vim.keymap.set
+    set("n", "<leader>lgD", "<cmd>lua vim.lsp.buf.declaration()<CR>", { buffer = true })
+    set("n", "<leader>lgd", "<cmd>lua vim.lsp.buf.definition()<CR>", { buffer = true })
+    set("n", "<leader>lK", "<cmd>lua vim.lsp.buf.hover()<CR>", { buffer = true })
+    set("n", "<leader>ln", "<cmd>lua vim.lsp.buf.implementation()<CR>", { buffer = true })
+    set("n", "<leader>lh", "<cmd>lua vim.lsp.buf.signature_help()<CR>", { buffer = true })
+    set("n", "<leader>lwa", "<cmd>lua vim.lsp.buf.add_workspace_folder()<CR>", { buffer = true })
+    set("n", "<leader>lwr", "<cmd>lua vim.lsp.buf.remove_workspace_folder()<CR>", { buffer = true })
+    set("n", "<leader>lwl", "<cmd>lua print(vim.inspect(vim.lsp.buf.list_workspace_folders()))<CR>", { buffer = true })
+    set("n", "<leader>lD", "<cmd>lua vim.lsp.buf.type_definition()<CR>", { buffer = true })
+    set("n", "<leader>lrn", "<cmd>lua vim.lsp.buf.rename()<CR>", { buffer = true })
+    set("n", "<leader>lca", "<cmd>lua vim.lsp.buf.code_action()<CR>", { buffer = true })
+    set("n", "<leader>lgr", "<cmd>lua vim.lsp.buf.references()<CR>", { buffer = true })
+    set("n", "<leader>le", "<cmd>lua vim.lsp.diagnostic.show_line_diagnostics()<CR>", { buffer = true })
+    set("n", "<leader>l[d", "<cmd>lua vim.lsp.diagnostic.goto_prev()<CR>", { buffer = true })
+    set("n", "<leader>l]d", "<cmd>lua vim.lsp.diagnostic.goto_next()<CR>", { buffer = true })
+    set("n", "<leader>lq", "<cmd>lua vim.lsp.diagnostic.set_loclist()<CR>", { buffer = true })
+    set("n", "<leader>lf", "<cmd>lua vim.lsp.buf.formatting()<CR>", { buffer = true })
+  end,
+})
 
 require("mason").setup()
 if vim.fn.has("win32") == 1 or vim.fn.has("win64") == 1 then
